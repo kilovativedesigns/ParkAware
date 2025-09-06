@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Custom FAB shape (always perfectly circular) -->
+    <style name="RoundFabShape">
+        <item name="shapeAppearanceSmallComponent">@style/RoundCorners50</item>
+        <item name="shapeAppearanceMediumComponent">@style/RoundCorners50</item>
+        <item name="shapeAppearanceLargeComponent">@style/RoundCorners50</item>
+    </style>
+
+    <style name="RoundCorners50">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>
