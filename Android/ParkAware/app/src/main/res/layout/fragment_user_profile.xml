@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top app bar with back arrow -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/pa_background"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/profile_title"
+        app:titleTextColor="?attr/colorOnSurface" />
+
+    <!-- Your existing content -->
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ... KEEP ALL YOUR EXISTING CONTENT EXACTLY AS-IS ... -->
+            <!-- Avatar card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="?attr/colorOutline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/pa_background"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <ImageView
+                        android:id="@+id/imgAvatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/pa_circle_bg"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_person_24" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnChangeAvatar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Change Avatar"
+                        app:cornerRadius="20dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Account section -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="User Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="User ID">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserId"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Subscription Status: Free"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+            <!-- Buttons row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSignOut"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sign Out"
+                    app:backgroundTint="@color/pa_selected_tab"
+                    app:cornerRadius="20dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp" />
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteAccount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Delete Account"
+                    app:cornerRadius="20dp"
+                    app:iconPadding="8dp"
+                    app:iconGravity="textStart"
+                    app:backgroundTint="@android:color/holo_red_dark"
+                    app:strokeWidth="0dp" />
+            </LinearLayout>
+
+            <!-- Upgrade / restore -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUpgrade"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upgrade to Pro"
+                    app:cornerRadius="20dp"
+                    app:iconPadding="8dp"
+                    app:iconGravity="textStart" />
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRestore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Restore Purchases"
+                    app:cornerRadius="20dp"
+                    app:iconPadding="8dp"
+                    app:iconGravity="textStart" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

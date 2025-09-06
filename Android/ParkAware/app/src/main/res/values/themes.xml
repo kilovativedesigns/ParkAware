@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App theme (Material 3) -->
+    <style name="Theme.ParkAware" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/pa_background</item>
+
+        <!-- Only the few roles you reference -->
+        <item name="colorPrimary">@color/pa_selected_tab</item>
+        <item name="colorSurface">@color/pa_surface</item>
+        <item name="colorOnSurface">@color/pa_text_primary</item>
+        <!-- Added so ?attr/colorOnSurfaceVariant resolves in both modes -->
+        <item name="colorOnSurfaceVariant">@color/pa_text_secondary</item>
+    </style>
+
+    <!-- ShapeAppearance styles (what the overlay attributes require) -->
+    <!-- 16dp rounded corner shape (keep if you need it elsewhere) -->
+    <style name="ShapeAppearance.ParkAware.MediumRound"
+        parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Fully circular shape -->
+    <style name="ShapeAppearance.ParkAware.Round"
+        parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Overlay applied ONLY to the SpeedDial's main FAB.
+         Using the MaterialComponents overlay (M3 has no specific FAB overlay). -->
+    <style name="ParkAware.FabRound" parent="ThemeOverlay.MaterialComponents">
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.ParkAware.Round</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.ParkAware.Round</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.ParkAware.Round</item>
+        <item name="tint">@android:color/black</item>
+    </style>
+
+</resources>

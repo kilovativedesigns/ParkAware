@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors (LIGHT) -->
+    <color name="pa_background">#DDE5EA</color>
+    <color name="pa_surface">#FFFFFF</color>
+    <color name="pa_selected_tab">#008080</color> <!-- teal -->
+    <color name="pa_text_primary">#212121</color>
+    <color name="pa_text_secondary">#757575</color>
+
+    <color name="pa_bottom_nav_tint">#FFFFFF</color>
+    <color name="sd_fab_background">#3F51B5</color>   <!-- or your brand color -->
+    <color name="sd_fab_icon_tint">#FFFFFF</color>
+    <color name="sd_fab_ripple">#66FFFFFF</color>     <!-- semi-transparent white -->
+    <color name="teal_200">#80CBC4</color>
+
+    <!-- Report-type themed colors (exact hex from your specs) -->
+    <!-- Officer = dark teal: R:0 G:114 B:135 -->
+    <color name="dark_teal">#007287</color>
+    <!-- Chalk = sunset orange: R:255 G:155 B:87 -->
+    <color name="sunset_orange">#FF9B57</color>
+    <!-- Fine = warm coral: R:253 G:100 B:105 -->
+    <color name="warm_coral">#FD6469</color>
+
+    <!-- Other accents (kept) -->
+    <color name="soft_aqua">#A6E6E7</color>
+    <color name="sea_foam_green">#66D1C1</color>
+    <color name="light_teal">#4FCED0</color>
+    <color name="base_teal">#00A6A8</color>
+</resources>

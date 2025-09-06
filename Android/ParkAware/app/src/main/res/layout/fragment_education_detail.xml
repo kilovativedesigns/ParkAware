@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.education.EducationDetailFragment">
+
+    <!-- Toolbar header, same height/placement as Settings -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/edu_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        app:titleTextColor="?attr/colorOnSurface" />
+
+    <!-- Tips list (bullet-style rows) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/edu_detail_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_education_tip" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Home tab -->
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/ic_map"
+        android:title="Home" />
+
+    <!-- Sightings tab -->
+    <item
+        android:id="@+id/tab_sightings"
+        android:icon="@drawable/outline_add_location_24"
+        android:title="Sightings" />
+
+    <!-- Rules / Education tab -->
+    <item
+        android:id="@+id/tab_rules"
+        android:icon="@drawable/baseline_menu_book_24"
+        android:title="Rules" />
+
+    <!-- Settings tab -->
+    <item
+        android:id="@+id/tab_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+
+</menu>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Top bar with back arrow -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarReminders"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/reminders_title"
+        app:navigationIcon="@drawable/ic_arrow_back_24" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchEnable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rem_enable" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/rem_default_time">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMinutes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/rem_minutes_hint"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvStyleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/rem_style"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+            <Spinner
+                android:id="@+id/spinnerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/rem_style_hint" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSetNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/rem_set_now" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/rem_clear_all" />
+
+            <TextView
+                android:id="@+id/tvInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/rem_info"
+                android:textAppearance="?attr/textAppearanceBodySmall" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

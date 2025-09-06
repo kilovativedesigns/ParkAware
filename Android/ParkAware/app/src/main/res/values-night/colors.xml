@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors (DARK) -->
+    <!-- Use the SAME names as light so DayNight can override them -->
+    <color name="pa_background">#121212</color>
+    <color name="pa_surface">#1E1E1E</color>
+    <color name="pa_selected_tab">#00A6A8</color> <!-- teal highlight -->
+    <color name="pa_text_primary">#FFFFFF</color>
+    <color name="pa_text_secondary">#B3FFFFFF</color>
+
+    <!-- Report-type themed colors (kept identical unless you prefer muted variants) -->
+    <color name="dark_teal">#007287</color>
+    <color name="sunset_orange">#FF9B57</color>
+    <color name="warm_coral">#FD6469</color>
+
+    <!-- Other accents (kept) -->
+    <color name="soft_aqua">#A6E6E7</color>
+    <color name="sea_foam_green">#66D1C1</color>
+    <color name="light_teal">#4FCED0</color>
+    <color name="base_teal">#00A6A8</color>
+</resources>
