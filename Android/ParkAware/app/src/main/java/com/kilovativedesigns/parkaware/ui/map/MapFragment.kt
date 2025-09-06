@@ -43,9 +43,9 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import androidx.appcompat.content.res.AppCompatResources // <-- existing
+import androidx.appcompat.content.res.AppCompatResources
 
-// ---- NEW IMPORTS (for dark-mode map styling) -------------------------------
+// ---- Optional (dark-mode map styling) --------------------------------------
 import android.content.res.Configuration
 import com.google.android.gms.maps.model.MapStyleOptions
 // ---------------------------------------------------------------------------
@@ -62,13 +62,18 @@ class MapFragment : Fragment() {
     private val markerMap = mutableMapOf<String, Marker>()
     private val timeFmt = SimpleDateFormat("MMM d, h:mm a", Locale.getDefault())
 
-    // Keep our two FABs above the map surface
+    // Keep all FABs above the map surface
     private fun liftFabs() {
         val z = 2000f
         b.fabMyLocation.elevation = z
-        b.fabSetReminder.elevation = z + 1
+        b.fabReport.elevation = z + 1
+        b.fabSetReminder.elevation = z + 2
+        b.fabFilter.elevation = z + 3
+
         b.fabMyLocation.bringToFront()
+        b.fabReport.bringToFront()
         b.fabSetReminder.bringToFront()
+        b.fabFilter.bringToFront()
     }
 
     private val requestPerms = registerForActivityResult(
@@ -107,7 +112,8 @@ class MapFragment : Fragment() {
             map.uiSettings.isCompassEnabled = true
             map.uiSettings.isMapToolbarEnabled = false
 
-            // (Call applyMapStyle(map) here if you want, but I did not change logic.)
+            // Optionally style the map (dark/light)
+            // applyMapStyle(map)
 
             if (hasLocationPermission()) {
                 enableMyLocationAndCenter()
@@ -135,11 +141,17 @@ class MapFragment : Fragment() {
             }
         }
 
-        // My Location
+        // FAB: My Location
         b.fabMyLocation.setOnClickListener { enableMyLocationAndCenter() }
 
-        // REPORT: open the bottom sheet with icons
-        b.fabSetReminder.setOnClickListener { showReportSheet() }
+        // FAB: Report (was old setReminder FAB)
+        b.fabReport.setOnClickListener { showReportSheet() }
+
+        // NEW FAB: Parking Reminder
+        b.fabSetReminder.setOnClickListener { showParkingReminder() }
+
+        // NEW FAB: Filters
+        b.fabFilter.setOnClickListener { openFilterScreen() }
 
         // Also lift after first layout to be safe
         b.mapRoot.post { liftFabs() }
@@ -156,7 +168,6 @@ class MapFragment : Fragment() {
             setPadding(dp(16), dp(12), dp(16), dp(16))
         }
 
-        // helper to create one row with custom color + icon  (UPDATED)
         fun row(
             text: String,
             iconRes: Int,
@@ -168,14 +179,12 @@ class MapFragment : Fragment() {
             ).apply {
                 this.text = text
 
-                // keep original icon artwork/colors and make it large enough
                 icon = AppCompatResources.getDrawable(ctx, iconRes)
                 iconTint = null
                 iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
                 iconSize = dp(48)
                 iconPadding = dp(14)
 
-                // Themed background + contrasting text
                 backgroundTintList = ContextCompat.getColorStateList(ctx, bgColor)
                 setTextColor(ContextCompat.getColor(ctx, android.R.color.white))
 
@@ -193,38 +202,41 @@ class MapFragment : Fragment() {
             }
         }
 
-        // Officer button (Warm Coral)
         container.addView(
-            row(
-                getString(R.string.report_officer),
-                R.drawable.ic_pin_officer,
-                R.color.warm_coral
-            ) { handleReportTap("officer") }
+            row(getString(R.string.report_officer), R.drawable.ic_pin_officer, R.color.warm_coral) {
+                handleReportTap("officer")
+            }
         )
-
-        // Chalk button (Sunset Orange)
         container.addView(
-            row(
-                getString(R.string.report_chalk),
-                R.drawable.ic_pin_chalk,
-                R.color.sunset_orange
-            ) { handleReportTap("chalk") }
+            row(getString(R.string.report_chalk), R.drawable.ic_pin_chalk, R.color.sunset_orange) {
+                handleReportTap("chalk")
+            }
         )
-
-        // Fine button (Dark Teal)
         container.addView(
-            row(
-                getString(R.string.report_fine),
-                R.drawable.ic_pin_fine,
-                R.color.dark_teal
-            ) { handleReportTap("fine") }
+            row(getString(R.string.report_fine), R.drawable.ic_pin_fine, R.color.dark_teal) {
+                handleReportTap("fine")
+            }
         )
 
         sheet.setContentView(container)
         sheet.show()
     }
 
-    // ---- NEW HELPERS (dark-mode map styling; not called anywhere yet) ------
+    // NEW: Parking Reminder entry (stub for now—hook to your UI or AlarmManager)
+    private fun showParkingReminder() {
+        // Example: show a bottom sheet with quick durations (15/30/60 mins) or navigate to a fragment
+        // findNavController().navigate(R.id.reminderFragment)
+        Snackbar.make(b.mapRoot, "Parking reminder...", Snackbar.LENGTH_SHORT).show()
+    }
+
+    // NEW: open filter screen (stub)
+    private fun openFilterScreen() {
+        // Navigate to your filter UI or open a dialog
+        // findNavController().navigate(R.id.filterFragment)
+        Snackbar.make(b.mapRoot, "Open filters…", Snackbar.LENGTH_SHORT).show()
+    }
+
+    // ---- Optional helpers for dark-mode map styling ------------------------
     private fun isNightMode(): Boolean {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return mode == Configuration.UI_MODE_NIGHT_YES
@@ -240,10 +252,8 @@ class MapFragment : Fragment() {
     }
     // ------------------------------------------------------------------------
 
-    // helper dp conversion (single definition)
-    private fun dp(value: Int): Int {
-        return (value * resources.displayMetrics.density).toInt()
-    }
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density).toInt()
 
     // ------------------------------------------------------------------------
     // Permissions + My Location

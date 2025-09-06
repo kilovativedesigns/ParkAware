@@ -214,4 +214,7 @@ admin@parkaware.app
     <string name="signin_failed_anon">Couldn’t continue as guest. Please try again.</string>
     <string name="parking_education">Parking Education</string>
     <string name="education_header">ParkAware Education</string>
+    <string name="filter_sightings">Filter Sightings</string>
+    <string name="report_sighting">Report a Sighting</string>
+    <string name="set_parking_reminder">Set a Parking Reminder</string>
 </resources>

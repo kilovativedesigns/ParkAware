@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Top-right FAB column: My Location -->
+    <!-- Top-right FAB column: Reminder, My Location, Filter -->
     <LinearLayout
         android:id="@+id/top_right_fabs"
         android:layout_width="wrap_content"
@@ -23,31 +23,54 @@
         android:layout_margin="16dp"
         android:elevation="1000dp">
 
+        <!-- Parking reminder -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSetReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/set_parking_reminder"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_alarm_24"
+            app:backgroundTint="@color/pa_selected_tab"
+            app:tint="@android:color/white" />
+
+        <!-- My location -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabMyLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:contentDescription="@string/my_location"
+            app:fabSize="mini"
             app:srcCompat="@android:drawable/ic_menu_mylocation"
             app:backgroundTint="@color/pa_selected_tab"
             app:tint="@android:color/white" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="12dp" />
-
+        <!-- Filter sightings -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/filter_sightings"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_filter_list_24"
+            app:backgroundTint="@color/pa_selected_tab"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
     <!-- Bottom-center FAB: opens the report dialog -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSetReminder"
+        android:id="@+id/fabReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="24dp"
-        android:contentDescription="@string/set_reminder"
+        android:contentDescription="@string/report_sighting"
         app:backgroundTint="@color/pa_selected_tab"
         app:fabCustomSize="68dp"
+        app:shapeAppearanceOverlay="@style/RoundFabShape"
+        app:fabSize="normal"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/ic_plus"
         app:tint="@android:color/white" />
