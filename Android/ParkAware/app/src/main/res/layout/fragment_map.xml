@@ -31,6 +31,7 @@
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/set_parking_reminder"
             app:fabSize="mini"
+            app:shapeAppearanceOverlay="@style/RoundCorners50"
             app:srcCompat="@drawable/ic_alarm_24"
             app:backgroundTint="@color/pa_selected_tab"
             app:tint="@android:color/white" />
@@ -43,6 +44,7 @@
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/my_location"
             app:fabSize="mini"
+            app:shapeAppearanceOverlay="@style/RoundCorners50"
             app:srcCompat="@android:drawable/ic_menu_mylocation"
             app:backgroundTint="@color/pa_selected_tab"
             app:tint="@android:color/white" />
@@ -54,6 +56,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/filter_sightings"
             app:fabSize="mini"
+            app:shapeAppearanceOverlay="@style/RoundCorners50"
             app:srcCompat="@drawable/ic_filter_list_24"
             app:backgroundTint="@color/pa_selected_tab"
             app:tint="@android:color/white" />
@@ -68,9 +71,8 @@
         android:layout_marginBottom="24dp"
         android:contentDescription="@string/report_sighting"
         app:backgroundTint="@color/pa_selected_tab"
-        app:fabCustomSize="68dp"
-        app:shapeAppearanceOverlay="@style/RoundFabShape"
-        app:fabSize="normal"
+        app:fabCustomSize="74dp"
+        app:shapeAppearanceOverlay="@style/RoundCorners50"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/ic_plus"
         app:tint="@android:color/white" />
