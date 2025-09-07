@@ -16,7 +16,8 @@
         android:background="@color/pa_background"
         app:contentInsetStart="0dp"
         app:title="ParkAware Education"
-        app:titleTextColor="?attr/colorOnSurface" />
+        app:titleTextColor="?attr/colorOnSurface"
+        app:titleTextAppearance="@style/ToolbarTitleRoboto" />
 
     <!-- Category list -->
     <androidx.recyclerview.widget.RecyclerView

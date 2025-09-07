@@ -17,11 +17,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/roboto"
-        android:paddingTop="0dp"
         android:paddingLeft="10dp"
+        android:paddingTop="0dp"
         android:text="Recent Sightings"
         android:textAlignment="textStart"
-        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textColor="@color/dark_teal"
         android:textSize="20sp"
         android:textStyle="bold" />
 

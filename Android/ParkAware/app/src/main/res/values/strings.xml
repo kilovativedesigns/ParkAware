@@ -3,7 +3,7 @@
 
     <string name="app_name">ParkAware</string>
 
-    <string name="home"></string>
+    <string name="home">Home</string>
 
 
     <string name="warning_title">Welcome to the ParkAware Community</string>

@@ -12,4 +12,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ToolbarTitleRoboto" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="fontFamily">@font/roboto</item> <!-- assumes you have res/font/roboto.ttf -->
+    </style>
 </resources>
