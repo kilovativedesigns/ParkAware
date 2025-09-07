@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:text="@string/disclaimer_body" />
+            android:text="@string/disclaimer_body"
+            android:textAlignment="viewStart"
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
     </ScrollView>
 </LinearLayout>

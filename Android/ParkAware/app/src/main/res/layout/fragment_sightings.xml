@@ -9,18 +9,22 @@
     android:paddingEnd="0dp">
 
     <!-- Screen title -->
+
+    <!-- Content container -->
     <TextView
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto"
         android:paddingTop="0dp"
+        android:paddingLeft="10dp"
         android:text="Recent Sightings"
+        android:textAlignment="textStart"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- Content container -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -20,7 +20,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="@null"
-            android:tint="?attr/colorPrimary" />
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/title"
@@ -38,8 +38,8 @@
             android:layout_height="16dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_lock_small"
-            android:tint="?attr/colorOnSurfaceVariant"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="?attr/colorOnSurfaceVariant" />
 
         <ImageView
             android:id="@+id/chevron"
@@ -48,6 +48,6 @@
             android:layout_marginStart="8dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_chevron_right"
-            android:tint="?attr/colorPrimary" />
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

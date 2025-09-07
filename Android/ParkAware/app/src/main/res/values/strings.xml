@@ -80,128 +80,85 @@
         <item>Check both sides of the street—restrictions can alternate by day or time.</item>
     </string-array>
 
-<string name="about_body"><![CDATA[
-ParkAware is about bringing the community together to raise awareness of safety issues around parking and other parking related issues that impact our lives every day, through education and transparent and respectful reporting.
+    <string name="about_body">ParkAware is about bringing the community together to raise awareness of safety issues around parking and other parking related issues that impact our lives every day, through education and transparent and respectful reporting.\n\n
+How It Works\n
+• Share sightings of parking enforcement officers (respectfully)\n
+• Get parking reminders and location alerts\n
+• Stay informed about council-related activity\n\n
+Founded in 2025\n
+Contact: admin@parkaware.app</string>
 
-How It Works
-• Share sightings of parking enforcement officers (respectfully)
-• Get parking reminders and location alerts
-• Stay informed about council-related activity
+    <string name="disclaimer_body">Last Updated: 01/07/2025\n\n
+ParkAware is a community-driven application developed to promote parking awareness, encourage safe and lawful behaviour, and help users stay informed about parking restrictions, enforcement presence, and related council matters.\n\n
+By using ParkAware, you acknowledge and agree to the following:\n\n
+1. Informational Purposes Only\n
+The content and alerts provided by ParkAware are offered for general informational purposes only. They are not intended to be, nor should they be considered, professional advice or legally binding instructions. You remain fully responsible for complying with all applicable parking laws, signage, and local government regulations.\n\n
+2. No Guarantee of Accuracy\n
+While we aim to provide up-to-date and relevant information, ParkAware may rely on user-submitted, third-party, or publicly available data and cannot guarantee accuracy or timeliness.\n\n
+3. No Liability for Fines or Incidents\n
+ParkAware is not liable for parking infringements, towing, damage, or losses resulting from parking decisions or use of the App.\n\n
+4. Respectful Conduct\n
+Any use of the App to incite or support abuse, threats, or harassment toward Police Officers, Council Rangers, or Parking Officers is strictly prohibited.\n\n
+5. No Use While Driving\n
+Do not interact with the App while driving.\n\n
+6. Changes and Updates\n
+This Disclaimer may be updated at any time without notice.\n\n
+7. Contact\n
+Use the feedback form on the Contact Us screen.</string>
 
-Founded in 2025
-Contact: admin@parkaware.app
-]]></string>
+    <string name="terms_body">Effective Date: 01/07/2025\n\n
+Welcome to ParkAware (“we”, “us”, “our”). These Terms &amp; Conditions (“Terms”) govern your use of the ParkAware mobile application (“the App”) and any related services we provide. By downloading, accessing, or using the App, you agree to be bound by these Terms and our Privacy Policy. If you do not agree, please do not use the App.\n\n
+1. Purpose of the App\n
+• Promote awareness of local parking rules\n
+• Help users stay informed about potential fines, restrictions, and enforcement activity\n
+• Encourage safe, respectful, and lawful behaviour\n\n
+2. Community Standards\n
+Users must not submit false or misleading information, incite abuse/harassment, or promote hostility toward enforcement personnel.\n\n
+3. User Responsibilities\n
+Follow all laws, treat information as general guidance, take personal responsibility for your actions, and do not use the App while driving.\n\n
+4. Accuracy of Information\n
+We do not guarantee accuracy, completeness, or reliability. Always verify important information with your local authority.\n\n
+5. Purchases, Trials &amp; Subscriptions\n
+Subscriptions may auto-renew unless cancelled in your store account settings. We do not store your payment details.\n\n
+6. Data Privacy\n
+We collect and process personal data per our Privacy Policy. You can delete your account at any time; some data may be retained as required by law.\n\n
+7. Limitation of Liability\n
+The App is provided “as is” without warranties of any kind.\n\n
+8. Intellectual Property\n
+All content and trademarks remain the property of the developers.\n\n
+9. Changes\n
+We may update these Terms at any time.\n\n
+10. Termination\n
+We may suspend or terminate access for violations.\n\n
+11. Governing Law\n
+New South Wales, Australia.\n\n
+12. Contact\n
+admin@parkaware.app</string>
 
-<string name="disclaimer_body"><![CDATA[
-Last Updated: 01/07/2025
-
-ParkAware is a community-driven application developed to promote parking awareness, encourage safe and lawful behaviour, and help users stay informed about parking restrictions, enforcement presence, and related council matters.
-
-By using ParkAware, you acknowledge and agree to the following:
-
-1. Informational Purposes Only
-The content and alerts provided by ParkAware are offered for general informational purposes only. They are not intended to be, nor should they be considered, professional advice or legally binding instructions.
-You remain fully responsible for complying with all applicable parking laws, signage, and local government regulations.
-
-2. No Guarantee of Accuracy
-While we aim to provide up-to-date and relevant information, ParkAware may rely on user-submitted, third-party, or publicly available data and cannot guarantee accuracy or timeliness.
-
-3. No Liability for Fines or Incidents
-ParkAware is not liable for parking infringements, towing, damage, or losses resulting from parking decisions or use of the App.
-
-4. Respectful Conduct
-Any use of the App to incite or support abuse, threats, or harassment toward Police Officers, Council Rangers, or Parking Officers is strictly prohibited.
-
-5. No Use While Driving
-Do not interact with the App while driving.
-
-6. Changes and Updates
-This Disclaimer may be updated at any time without notice.
-
-7. Contact
-Use the feedback form on the Contact Us screen.
-]]></string>
-
-<string name="terms_body"><![CDATA[
-Effective Date: 01/07/2025
-
-Welcome to ParkAware (“we”, “us”, “our”). These Terms & Conditions (“Terms”) govern your use of the ParkAware mobile application (“the App”) and any related services we provide. By downloading, accessing, or using the App, you agree to be bound by these Terms and our Privacy Policy. If you do not agree, please do not use the App.
-
-1. Purpose of the App
-• Promote awareness of local parking rules
-• Help users stay informed about potential fines, restrictions, and enforcement activity
-• Encourage safe, respectful, and lawful behaviour
-
-2. Community Standards
-Users must not submit false or misleading information, incite abuse/harassment, or promote hostility toward enforcement personnel.
-
-3. User Responsibilities
-Follow all laws, treat information as general guidance, take personal responsibility for your actions, and do not use the App while driving.
-
-4. Accuracy of Information
-We do not guarantee accuracy, completeness, or reliability. Always verify important information with your local authority.
-
-5. Purchases, Trials & Subscriptions
-Subscriptions may auto-renew unless cancelled in your store account settings. We do not store your payment details.
-
-6. Data Privacy
-We collect and process personal data per our Privacy Policy. You can delete your account at any time; some data may be retained as required by law.
-
-7. Limitation of Liability
-The App is provided “as is” without warranties of any kind.
-
-8. Intellectual Property
-All content and trademarks remain the property of the developers.
-
-9. Changes
-We may update these Terms at any time.
-
-10. Termination
-We may suspend or terminate access for violations.
-
-11. Governing Law
-New South Wales, Australia.
-
-12. Contact
-admin@parkaware.app
-]]></string>
-
-<string name="privacy_body"><![CDATA[
-Effective Date: 01/07/2025
-
-ParkAware (“we,” “our,” or “us”) respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information when you use our mobile application (“App”).
-
-1. Information We Collect
-• Account info (name, email, sign-in)
-• Subscription/purchase info
-• Device info and crash reports
-• Location data (when permission granted)
-• Optional user content
-
-2. In‑App Purchases, Free Trials & Subscriptions
-Handled securely through the app store; manage in your account settings.
-
-3. Account Deletion
-You can delete your account in User Settings. Some anonymized data may be retained for legitimate purposes.
-
-4. How We Use Information
-Provide/improve the App, manage accounts/subscriptions, send necessary notifications, ensure security.
-
-5. Sharing
-No sale of personal data. Limited sharing with providers, for legal reasons, or in business transfers.
-
-6. Your Choices
-Update info, revoke location, delete account, manage subscriptions.
-
-7. Data Security
-We use appropriate safeguards, but no method is 100% secure.
-
-8. Changes
-We may update this policy from time to time.
-
-9. Contact Us
-admin@parkaware.app
-]]></string>
+    <string name="privacy_body">Effective Date: 01/07/2025\n\n
+ParkAware (“we,” “our,” or “us”) respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information when you use our mobile application (“App”).\n\n
+1. Information We Collect\n
+• Account info (name, email, sign-in)\n
+• Subscription/purchase info\n
+• Device info and crash reports\n
+• Location data (when permission granted)\n
+• Optional user content\n\n
+2. In-App Purchases, Free Trials &amp; Subscriptions\n
+Handled securely through the app store; manage in your account settings.\n\n
+3. Account Deletion\n
+You can delete your account in User Settings. Some anonymized data may be retained for legitimate purposes.\n\n
+4. How We Use Information\n
+Provide/improve the App, manage accounts/subscriptions, send necessary notifications, ensure security.\n\n
+5. Sharing\n
+No sale of personal data. Limited sharing with providers, for legal reasons, or in business transfers.\n\n
+6. Your Choices\n
+Update info, revoke location, delete account, manage subscriptions.\n\n
+7. Data Security\n
+We use appropriate safeguards, but no method is 100% secure.\n\n
+8. Changes\n
+We may update this policy from time to time.\n\n
+9. Contact Us\n
+admin@parkaware.app</string>
 
     <!-- Settings -->
     <string name="action_settings">Settings</string>
