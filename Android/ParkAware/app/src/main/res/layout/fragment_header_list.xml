@@ -3,9 +3,10 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pa_background"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:padding="0dp"
-    android:fitsSystemWindows="true">
+    android:padding="0dp">
 
     <!-- Screen title (set in code) -->
     <TextView

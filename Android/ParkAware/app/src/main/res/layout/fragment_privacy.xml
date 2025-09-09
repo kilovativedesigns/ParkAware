@@ -22,8 +22,9 @@
             android:id="@+id/tvBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/pa_background"
             android:padding="16dp"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:text="@string/privacy_body" />
+            android:text="@string/privacy_body"
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
     </ScrollView>
 </LinearLayout>

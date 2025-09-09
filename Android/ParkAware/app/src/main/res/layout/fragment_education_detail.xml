@@ -13,7 +13,7 @@
         android:id="@+id/edu_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorSurface"
+        android:background="@color/pa_background"
         app:titleTextColor="?attr/colorOnSurface" />
 
     <!-- Tips list (bullet-style rows) -->
@@ -21,6 +21,7 @@
         android:id="@+id/edu_detail_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/pa_background"
         android:baselineAligned="false"
         android:clipToPadding="false"
         tools:listitem="@layout/item_education_tip" />

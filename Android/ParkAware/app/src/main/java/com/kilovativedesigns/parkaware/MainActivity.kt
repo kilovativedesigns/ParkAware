@@ -2,7 +2,6 @@ package com.kilovativedesigns.parkaware
 
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import com.kilovativedesigns.parkaware.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,10 +20,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Draw edge-to-edge
+        // Draw edge-to-edge; bars are transparent via theme (themes.xml)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // Remove Android 10+ gray contrast scrim on the nav bar
         if (Build.VERSION.SDK_INT >= 29) {
-            // Avoid gray contrast scrim on Android 10+
             window.isNavigationBarContrastEnforced = false
         }
 
@@ -32,18 +32,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        // Make system bars transparent
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
-
-        // Light/dark icons based on current theme
+        // Set light/dark icons for status & nav bars (no deprecated color setters)
         val controller = WindowInsetsControllerCompat(window, binding.root)
-        val darkTheme =
-            (resources.configuration.uiMode and UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES
-        controller.isAppearanceLightStatusBars = !darkTheme
-        controller.isAppearanceLightNavigationBars = !darkTheme
+        val isDarkTheme = (resources.configuration.uiMode and UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES
+        controller.isAppearanceLightStatusBars = !isDarkTheme
+        controller.isAppearanceLightNavigationBars = !isDarkTheme
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
 
-        // Pad your root so BottomNav & content don’t get under system bars
+        // Give your content padding so it doesn't sit under the bars
         applySystemBarInsets(binding.root)
     }
 

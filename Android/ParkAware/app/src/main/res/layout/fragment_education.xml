@@ -9,6 +9,8 @@
     tools:context=".ui.education.EducationFragment">
 
     <!-- Toolbar header, same height/placement as Settings -->
+
+    <!-- Category list -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/edu_toolbar"
         android:layout_width="match_parent"
@@ -16,15 +18,15 @@
         android:background="@color/pa_background"
         app:contentInsetStart="0dp"
         app:title="ParkAware Education"
-        app:titleTextColor="?attr/colorOnSurface"
-        app:titleTextAppearance="@style/ToolbarTitleRoboto" />
+        app:titleTextAppearance="@style/ToolbarTitleRoboto"
+        app:titleTextColor="?attr/colorOnSurface" />
 
-    <!-- Category list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/edu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp"
+        android:background="@color/pa_background"
         android:baselineAligned="false"
         android:clipToPadding="false"
         tools:listitem="@layout/item_education_row" />
