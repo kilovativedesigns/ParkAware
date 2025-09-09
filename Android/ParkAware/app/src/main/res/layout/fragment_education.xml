@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pa_background"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".ui.education.EducationFragment">
+    android:padding="0dp"
+    tools:ignore="ExtraText">
+    android:fitsSystemWindows="true">
 
-    <!-- Category list -->
-
+    <!-- The list the fragment code expects -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/edu_list"
-        android:layout_width="match_parent"
+        android:layout_width="392dp"
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
-        android:background="@color/pa_background"
         android:baselineAligned="false"
         android:clipToPadding="false"
-        tools:listitem="@layout/item_education_row" />
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 </LinearLayout>

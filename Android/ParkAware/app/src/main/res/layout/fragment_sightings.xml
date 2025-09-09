@@ -4,15 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pa_background"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    android:paddingStart="0dp"
-    android:paddingEnd="0dp">
-
-    <!-- Screen title -->
+    android:orientation="vertical">
 
     <!-- Content container -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="0dp"
+            android:paddingStart="@dimen/page_gutter"
+            android:paddingEnd="@dimen/page_gutter"
             android:visibility="gone" />
 
         <!-- Progress -->

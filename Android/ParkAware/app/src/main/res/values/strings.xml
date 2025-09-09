@@ -7,7 +7,7 @@
 
 <!-- App bar titles / nav labels -->
 <string name="recent_sightings">Recent Sightings</string>
-<string name="education">Education</string>
+<string name="education">Quick Parking Tips</string>
 <string name="settings_title">Settings</string>
 <string name="user_profile_title">User Settings</string>
 <string name="reminders_title">Parking Reminders</string>
