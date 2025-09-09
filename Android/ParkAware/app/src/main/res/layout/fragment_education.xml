@@ -9,8 +9,6 @@
     android:orientation="vertical"
     tools:context=".ui.education.EducationFragment">
 
-    <!-- Toolbar header, same height/placement as Settings -->
-
     <!-- Category list -->
 
     <androidx.recyclerview.widget.RecyclerView

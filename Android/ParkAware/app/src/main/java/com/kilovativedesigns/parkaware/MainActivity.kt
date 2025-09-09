@@ -47,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         // Wire toolbar to NavController (for navigation/back arrow)
         NavigationUI.setupWithNavController(binding.topAppBar, navController, appBarConfig)
 
+        // Wire bottom nav to NavController
+        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
         // System bar icon contrast
         val isDark = (resources.configuration.uiMode and UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES
         WindowInsetsControllerCompat(window, binding.root).apply {
@@ -86,12 +89,22 @@ class MainActivity : AppCompatActivity() {
             )
             insets
         }
+
+        // Bottom nav gets bottom inset (for gesture nav)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(left = bars.left, right = bars.right, bottom = bars.bottom)
+            insets
+        }
         // ----------------------------------
 
         // Show/hide toolbar on destination changes + set the title explicitly
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             val showToolbar = destination.id != R.id.tab_home
             binding.topAppBar.visibility = if (showToolbar) View.VISIBLE else View.GONE
+            binding.topAppBar.setTitleTextColor(
+                androidx.core.content.ContextCompat.getColor(this, android.R.color.white)
+            )
 
             // Force title so it never shows blank (handles labels like "{title}")
             val explicitTitle =
@@ -99,10 +112,9 @@ class MainActivity : AppCompatActivity() {
                     ?: destination.label?.toString()
                     ?: ""
 
-            // Only set a title when we’re showing the bar
             binding.topAppBar.title = if (showToolbar) explicitTitle else ""
 
-            // Reapply insets to the view that should own the top inset
+            // Reapply insets depending on toolbar visibility
             if (showToolbar) {
                 binding.topAppBar.updatePadding(top = lastTop, left = lastLeft, right = lastRight)
                 navHostView.updatePadding(top = 0, left = lastLeft, right = lastRight, bottom = lastBottom)
