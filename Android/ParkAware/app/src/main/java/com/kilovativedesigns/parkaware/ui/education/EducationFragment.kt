@@ -8,28 +8,27 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.MaterialToolbar
 import com.kilovativedesigns.parkaware.R
+import androidx.navigation.fragment.findNavController
 
 class EducationFragment : Fragment() {
 
     private data class Category(
-        val id: String,     // key used to select tips in JSON
-        val title: String,  // row title
-        val icon: Int,      // drawable res
+        val id: String,
+        val title: String,
+        val icon: Int,
         val gated: Boolean = false
     )
 
     private val categories = listOf(
-        Category("onStreet",        "On-street Parking",        R.drawable.ic_parking_sign_24),
-        Category("carParks",        "Car Parks",                R.drawable.ic_car_24),
-        Category("schoolZones",     "School Zones",             R.drawable.ic_school_24),
-        Category("disabledParking", "Accessible/Disabled",      R.drawable.ic_accessible),
-        Category("topFines",        "Top Fines",                R.drawable.ic_money_24),
-        Category("dealWithFines",   "Dealing with Fines",       R.drawable.ic_help)
+        Category("onStreet",        "On-street Parking",   R.drawable.ic_parking_sign_24),
+        Category("carParks",        "Car Parks",           R.drawable.ic_car_24),
+        Category("schoolZones",     "School Zones",        R.drawable.ic_school_24),
+        Category("disabledParking", "Accessible/Disabled", R.drawable.ic_accessible),
+        Category("topFines",        "Top Fines",           R.drawable.ic_money_24),
+        Category("dealWithFines",   "Dealing with Fines",  R.drawable.ic_help)
     )
 
     override fun onCreateView(
@@ -38,15 +37,6 @@ class EducationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val root = inflater.inflate(R.layout.fragment_education, container, false)
-
-        // Try to use the ACTIVITY'S top app bar (so title lines up with Settings).
-        // Safe-lookup avoids the NPE you hit.
-        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)
-            ?.let { it.title = getString(R.string.education_header) }
-
-        // If this fragment layout ALSO has its own toolbar, set its title too (harmless if absent).
-        root.findViewById<MaterialToolbar?>(R.id.edu_toolbar)
-            ?.title = getString(R.string.education_header)
 
         // RecyclerView of categories
         val list = root.findViewById<RecyclerView>(R.id.edu_list)
@@ -63,15 +53,6 @@ class EducationFragment : Fragment() {
 
         return root
     }
-
-    // Keep title consistent if user returns to this fragment
-    override fun onResume() {
-        super.onResume()
-        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)
-            ?.let { it.title = getString(R.string.education_header) }
-    }
-
-    // --- Adapter & ViewHolder ----------------------------------------------
 
     private class CategoryVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.row_icon)
@@ -99,5 +80,10 @@ class EducationFragment : Fragment() {
             holder.lock.visibility = if (item.gated) View.VISIBLE else View.GONE
             holder.itemView.setOnClickListener { onClick(item) }
         }
+    }
+
+    companion object {
+        const val REQUEST_SET_TITLE = "edu:setTitle"
+        const val KEY_TITLE = "title"
     }
 }

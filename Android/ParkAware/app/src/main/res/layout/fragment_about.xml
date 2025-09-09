@@ -18,23 +18,24 @@
     <!-- Scrollable content below -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/pa_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="?android:attr/dividerVertical"
             android:orientation="vertical"
             android:padding="16dp"
-            android:divider="?android:attr/dividerVertical"
             android:showDividers="none">
 
             <!-- Card 1: App / Developer Info -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="16dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginBottom="24dp">
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,9 +46,9 @@
                         android:id="@+id/rowAbout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:paddingVertical="14dp"
-                        android:gravity="center_vertical">
+                        android:paddingVertical="14dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -60,7 +61,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_chevron_right_24"
-                            android:tint="?attr/colorPrimary" />
+                            app:tint="?attr/colorPrimary" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -82,9 +83,9 @@
                         android:id="@+id/rowDisclaimer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:paddingVertical="14dp"
-                        android:gravity="center_vertical">
+                        android:paddingVertical="14dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -97,7 +98,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_chevron_right_24"
-                            android:tint="?attr/colorPrimary" />
+                            app:tint="?attr/colorPrimary" />
                     </LinearLayout>
 
                     <View
@@ -109,9 +110,9 @@
                         android:id="@+id/rowTerms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:paddingVertical="14dp"
-                        android:gravity="center_vertical">
+                        android:paddingVertical="14dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -124,7 +125,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_chevron_right_24"
-                            android:tint="?attr/colorPrimary" />
+                            app:tint="?attr/colorPrimary" />
                     </LinearLayout>
 
                     <View
@@ -136,9 +137,9 @@
                         android:id="@+id/rowPrivacy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:paddingVertical="14dp"
-                        android:gravity="center_vertical">
+                        android:paddingVertical="14dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -151,7 +152,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_chevron_right_24"
-                            android:tint="?attr/colorPrimary" />
+                            app:tint="?attr/colorPrimary" />
                     </LinearLayout>
 
                 </LinearLayout>

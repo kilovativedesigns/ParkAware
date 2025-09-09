@@ -10,7 +10,7 @@
     app:cardBackgroundColor="@color/pa_background"
     app:cardCornerRadius="16dp"
     app:cardUseCompatPadding="true"
-    app:strokeColor="@color/pa_background"
+    app:strokeColor="@color/dark_teal"
     app:cardElevation="4dp">
 
     <LinearLayout

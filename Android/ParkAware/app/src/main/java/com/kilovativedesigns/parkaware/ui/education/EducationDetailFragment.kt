@@ -37,13 +37,6 @@ class EducationDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // ---- Toolbar ----
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.edu_detail_toolbar)
-        val title = arguments?.getString("title") ?: getString(R.string.education_header)
-        toolbar.title = title
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24)
-        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-        activity?.title = title
 
         // ---- RecyclerView (with divider) ----
         val rv = view.findViewById<RecyclerView>(R.id.edu_detail_list)

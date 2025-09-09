@@ -12,19 +12,6 @@
     <!-- Screen title -->
 
     <!-- Content container -->
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/roboto"
-        android:paddingLeft="10dp"
-        android:paddingTop="0dp"
-        android:text="Recent Sightings"
-        android:textAlignment="textStart"
-        android:textColor="@color/dark_teal"
-        android:textSize="20sp"
-        android:textStyle="bold" />
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -10,7 +10,7 @@
     app:cardBackgroundColor="@color/pa_background"
     app:cardCornerRadius="16dp"
     app:cardUseCompatPadding="true"
-    app:strokeColor="@color/pa_background"
+    app:strokeColor="@color/dark_teal"
     app:cardElevation="4dp">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="@null"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:tint="?attr/colorOnSurfaceVariant" />
 
         <TextView
             android:id="@+id/title"
@@ -45,8 +45,8 @@
             android:layout_marginEnd="8dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_lock_small"
-            android:tint="?attr/colorOnSurfaceVariant"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="?attr/colorOnSurfaceVariant" />
 
         <ImageView
             android:id="@+id/chevron"
@@ -54,6 +54,6 @@
             android:layout_height="20dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_chevron_right"
-            android:tint="@color/base_teal" />
+            app:tint="@color/base_teal" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

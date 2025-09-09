@@ -136,3 +136,4 @@ class SightingsMapFragment : Fragment() {
         return BitmapDescriptorFactory.fromBitmap(bmp)
     }
 }
+

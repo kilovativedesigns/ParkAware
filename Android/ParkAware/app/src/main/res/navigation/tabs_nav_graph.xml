@@ -8,92 +8,97 @@
     <fragment
         android:id="@+id/tab_home"
         android:name="com.kilovativedesigns.parkaware.ui.map.MapFragment"
-        android:label="Home"
+        android:label="@string/home_title"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/tab_sightings"
         android:name="com.kilovativedesigns.parkaware.sightings.SightingsFragment"
-        android:label="Sightings"
-        tools:layout="@layout/fragment_simple" />
+        android:label="@string/recent_sightings"
+        tools:layout="@layout/fragment_sightings" />
 
     <fragment
         android:id="@+id/tab_rules"
         android:name="com.kilovativedesigns.parkaware.ui.education.EducationFragment"
-        android:label="Rules"
+        android:label="@string/education"
         tools:layout="@layout/fragment_education" />
 
     <fragment
         android:id="@+id/tab_settings"
         android:name="com.kilovativedesigns.parkaware.ui.settings.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/settings_title"
         tools:layout="@layout/fragment_settings" />
 
-    <!-- Detail screens reachable from tabs (esp. Settings/Education) -->
+    <!-- Detail reachable from tabs -->
     <fragment
         android:id="@+id/educationDetailFragment"
         android:name="com.kilovativedesigns.parkaware.ui.education.EducationDetailFragment"
-        android:label="Details"
-        tools:layout="@layout/fragment_education_detail" />
+        android:label="{title}"
+        tools:layout="@layout/fragment_education_detail">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 
+    <!-- Settings sub-pages -->
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.UserProfileFragment"
-        android:label="User Profile"
+        android:label="@string/user_profile_title"
         tools:layout="@layout/fragment_simple" />
 
     <fragment
         android:id="@+id/notificationLocationFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.NotificationLocationFragment"
-        android:label="Sighting Settings"
+        android:label="@string/sighting_settings_title"
         tools:layout="@layout/fragment_simple" />
 
     <fragment
         android:id="@+id/remindersFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.RemindersFragment"
-        android:label="Parking Reminders"
+        android:label="@string/reminders_title"
         tools:layout="@layout/fragment_simple" />
 
     <fragment
         android:id="@+id/socialSettingsFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.SocialSettingsFragment"
-        android:label="Community Settings"
+        android:label="@string/community_settings_title"
         tools:layout="@layout/fragment_social_settings" />
 
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.AboutFragment"
-        android:label="About ParkAware"
+        android:label="@string/about_title"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.FeedbackFragment"
-        android:label="Help &amp; Feedback"
+        android:label="@string/help_feedback_title"
         tools:layout="@layout/fragment_feedback" />
 
     <!-- About sub-pages -->
     <fragment
         android:id="@+id/aboutInfoFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.AboutInfoFragment"
-        android:label="About ParkAware"
+        android:label="@string/about_title"
         tools:layout="@layout/fragment_about_info" />
 
     <fragment
         android:id="@+id/disclaimerFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.DisclaimerFragment"
-        android:label="Disclaimer"
+        android:label="@string/disclaimer_title"
         tools:layout="@layout/fragment_disclaimer" />
 
     <fragment
         android:id="@+id/termsFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.TermsFragment"
-        android:label="Terms &amp; Conditions"
+        android:label="@string/terms_title"
         tools:layout="@layout/fragment_terms" />
 
     <fragment
         android:id="@+id/privacyPolicyFragment"
         android:name="com.kilovativedesigns.parkaware.ui.settings.PrivacyPolicyFragment"
-        android:label="Privacy Policy"
+        android:label="@string/privacy_title"
         tools:layout="@layout/fragment_privacy" />
 </navigation>

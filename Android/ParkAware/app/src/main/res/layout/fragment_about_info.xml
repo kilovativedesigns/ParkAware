@@ -38,7 +38,6 @@
                 android:id="@+id/tvBody"
                 android:layout_width="match_parent"
                 android:layout_height="496dp"
-                android:fontFamily="@font/roboto"
                 android:paddingTop="16dp"
                 android:text="@string/about_body"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />

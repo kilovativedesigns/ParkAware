@@ -1,86 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ParkAware</string>
+<string name="app_name">ParkAware</string>
 
-    <string name="home">Home</string>
+<string name="home">Home</string>
 
+<!-- App bar titles / nav labels -->
+<string name="recent_sightings">Recent Sightings</string>
+<string name="education">Education</string>
+<string name="settings_title">Settings</string>
+<string name="user_profile_title">User Settings</string>
+<string name="reminders_title">Parking Reminders</string>
 
-    <string name="warning_title">Welcome to the ParkAware Community</string>
-    <string name="warning_subtitle">Helping you park smarter and avoid unnecessary fines.</string>
-    <string name="warning_legal">Remember to drive and park legally and safely and always be respectful of others.</string>
-    <string name="warning_cta">Let’s Park Smart</string>
-    <string name="warning_did_you_know">Did You Know?</string>
-    <string name="warning_privacy">ParkAware Privacy Policy</string>
-    <string name="warning_eula">Apple EULA</string>
+<!-- Previously empty titles given values so toolbar isn’t blank -->
+<string name="home_title">Home</string>
+<string name="decider_title">Decider</string>
+<string name="sign_in_title">Sign in</string>
+<string name="onboarding_title">Welcome</string>
 
-    <string name="profile_title">User Profile</string>
-    <string name="profile_avatar">Avatar</string>
-    <string name="profile_change_avatar">Change Avatar</string>
-    <string name="profile_section_account">Account</string>
-    <string name="profile_user_name">User Name</string>
-    <string name="profile_user_id_fmt">User ID: %1$s</string>
-    <string name="profile_sub_free">Subscription: Free</string>
-    <string name="profile_sub_pro">Subscription: Pro</string>
-    <string name="profile_sign_out">Sign Out</string>
-    <string name="profile_delete_account">Delete Account</string>
-    <string name="profile_upgrade_to_pro">Upgrade to Pro</string>
-    <string name="profile_restore_purchases">Restore Purchases</string>
-    <string name="profile_name_error">Name must be at least 2 characters</string>
-    <string name="profile_guest">Guest</string>
-    <string name="profile_not_signed_in">Not signed in</string>
-    <string name="profile_delete_title">Delete Account?</string>
-    <string name="profile_delete_msg">This action is permanent and will delete your account and local data.</string>
-    <string name="profile_recent_login_title">Sign in again required</string>
-    <string name="profile_recent_login_msg">Please sign in again to confirm account deletion.</string>
-    <string name="profile_delete_failed_title">Couldn’t delete account</string>
-    <string name="profile_delete_failed_msg">Please try again later.</string>
+<!-- Welcome / Warning -->
+<string name="warning_title">Welcome to the ParkAware Community</string>
+<string name="warning_subtitle">Helping you park smarter and avoid unnecessary fines.</string>
+<string name="warning_legal">Remember to drive and park legally and safely, and always be respectful of others.</string>
+<string name="warning_cta">Let’s Park Smart</string>
+<string name="warning_did_you_know">Did You Know?</string>
+<string name="warning_privacy">ParkAware Privacy Policy</string>
+<string name="warning_eula">Apple EULA</string>
 
-    <string name="report_officer">Parking Officer / Ranger</string>
-    <string name="report_chalk">Tyres Chalked</string>
-    <string name="report_fine">Fine Issued</string>
-    <string name="my_location">My location</string>
+<!-- Profile -->
+<string name="profile_title">User Profile</string>
+<string name="profile_avatar">Avatar</string>
+<string name="profile_change_avatar">Change Avatar</string>
+<string name="profile_section_account">Account</string>
+<string name="profile_user_name">User Name</string>
+<string name="profile_user_id_fmt">User ID: %1$s</string>
+<string name="profile_sub_free">Subscription: Free</string>
+<string name="profile_sub_pro">Subscription: Pro</string>
+<string name="profile_sign_out">Sign Out</string>
+<string name="profile_delete_account">Delete Account</string>
+<string name="profile_upgrade_to_pro">Upgrade to Pro</string>
+<string name="profile_restore_purchases">Restore Purchases</string>
+<string name="profile_name_error">Name must be at least 2 characters</string>
+<string name="profile_guest">Guest</string>
+<string name="profile_not_signed_in">Not signed in</string>
+<string name="profile_delete_title">Delete Account?</string>
+<string name="profile_delete_msg">This action is permanent and will delete your account and local data.</string>
+<string name="profile_recent_login_title">Please sign in again</string>
+<string name="profile_recent_login_msg">Please sign in again to confirm account deletion.</string>
+<string name="profile_delete_failed_title">Couldn’t delete account</string>
+<string name="profile_delete_failed_msg">Please try again later.</string>
 
-    <string name="sd_report">Report</string>
-    <string name="sd_settings">Settings</string>
+<!-- Reporting -->
+<string name="report_officer">Parking Officer / Ranger</string>
+<string name="report_chalk">Tyres Chalked</string>
+<string name="report_fine">Fine Issued</string>
+<string name="my_location">My location</string>
 
-    <string name="reminder_scheduled_ok">Reminder scheduled</string>
-    <string name="reminder_title">Parking Reminder</string>
-    <string name="reminder_body">Your parking time is nearly up. Head back to your car.</string>
-    <string name="reminder_channel_name">Parking Reminders</string>
-    <string name="reminder_channel_desc">Notifications to remind you before parking expires.</string>
+<!-- Sidebar / Destinations -->
+<string name="sd_report">Report</string>
+<string name="sd_settings">Settings</string>
 
-    <!-- Reminders / FAB -->
-    <string name="set_reminder">Set parking reminder</string>
+<!-- Reminders / Notifications -->
+<string name="reminder_scheduled_ok">Reminder scheduled</string>
+<string name="reminder_title">Parking Reminder</string>
+<string name="reminder_body">Your parking time is nearly up. Head back to your car.</string>
+<string name="reminder_channel_name">Parking Reminders</string>
+<string name="reminder_channel_desc">Notifications to remind you before parking expires.</string>
 
-    <!-- Reminders screen -->
-    <string name="reminders_title">Parking Reminders</string>
-    <string name="rem_scheduled_fmt">Reminder set for %1$d minutes (alerts 5 min early)</string>
-    <string name="rem_cleared">All reminders cleared</string>
-    <string name="rem_enable">Enable Smart Parking Reminders</string>
-    <string name="rem_default_time">Default Reminder Time</string>
-    <string name="rem_minutes_hint">Minutes (e.g. 30)</string>
+<!-- Reminders / FAB -->
+<string name="set_reminder">Set parking reminder</string>
 
-    <string name="rem_style">Notification Style</string>
-    <string name="rem_style_hint">Choose how reminders appear</string>
+<!-- Reminders screen -->
+<string name="rem_scheduled_fmt">Reminder set for %1$d minutes (alerts 5 min early)</string>
+<string name="rem_cleared">All reminders cleared</string>
+<string name="rem_enable">Enable Smart Parking Reminders</string>
+<string name="rem_default_time">Default Reminder Time</string>
+<string name="rem_minutes_hint">Minutes (e.g. 30)</string>
+<string name="rem_style">Notification Style</string>
+<string name="rem_style_hint">Choose how reminders appear</string>
+<string name="rem_set_now">Set reminder now</string>
+<string name="rem_clear_all">Clear all scheduled reminders</string>
 
-    <string name="rem_set_now">Set reminder now</string>
-    <string name="rem_clear_all">Clear all scheduled reminders</string>
+<string name="rem_info">
+        Smart Reminders can prompt you to set a timer after you park.
+        You’ll be alerted 5 minutes before your selected time.
+    </string>
 
-    <string name="rem_info">
-    Smart Reminders can prompt you to set a timer after you park.
-    You’ll be alerted 5 minutes before your selected time.
-</string>
+<string-array name="warning_tips">
+    <item>Many cities tow during street cleaning hours even if signs are faded—double-check the schedule.</item>
+    <item>Temporary construction signs often override regular rules. Scan the whole block before you park.</item>
+    <item>Pay-by-phone zones can still ticket if you’re outside the zone code—verify the number on the sign.</item>
+    <item>Time limits reset after posted end times; overnight often has different rules.</item>
+    <item>Check both sides of the street—restrictions can alternate by day or time.</item>
+</string-array>
 
-    <string-array name="warning_tips">
-        <item>Many cities tow during street cleaning hours even if signs are faded—double-check the schedule.</item>
-        <item>Temporary construction signs often override regular rules. Scan the whole block before you park.</item>
-        <item>Pay-by-phone zones can still ticket if you’re outside the zone code—verify the number on the sign.</item>
-        <item>Time limits reset after posted end times; overnight often has different rules.</item>
-        <item>Check both sides of the street—restrictions can alternate by day or time.</item>
-    </string-array>
-
-    <string name="about_body">ParkAware is about bringing the community together to raise awareness of safety issues around parking and other parking related issues that impact our lives every day, through education and transparent and respectful reporting.\n\n
+<!-- Static pages / copy -->
+<string name="about_title">About ParkAware</string>
+<string name="about_body">ParkAware is about bringing the community together to raise awareness of safety issues around parking and other parking related issues that impact our lives every day, through education and transparent and respectful reporting.\n\n
 How It Works\n
 • Share sightings of parking enforcement officers (respectfully)\n
 • Get parking reminders and location alerts\n
@@ -88,7 +104,8 @@ How It Works\n
 Founded in 2025\n
 Contact: admin@parkaware.app</string>
 
-    <string name="disclaimer_body">Last Updated: 01/07/2025\n\n
+<string name="disclaimer_title">Disclaimer</string>
+<string name="disclaimer_body">Last Updated: 01/07/2025\n\n
 ParkAware is a community-driven application developed to promote parking awareness, encourage safe and lawful behaviour, and help users stay informed about parking restrictions, enforcement presence, and related council matters.\n\n
 By using ParkAware, you acknowledge and agree to the following:\n\n
 1. Informational Purposes Only\n
@@ -106,7 +123,8 @@ This Disclaimer may be updated at any time without notice.\n\n
 7. Contact\n
 Use the feedback form on the Contact Us screen.</string>
 
-    <string name="terms_body">Effective Date: 01/07/2025\n\n
+<string name="terms_title">Terms and Conditions</string>
+<string name="terms_body">Effective Date: 01/07/2025\n\n
 Welcome to ParkAware (“we”, “us”, “our”). These Terms &amp; Conditions (“Terms”) govern your use of the ParkAware mobile application (“the App”) and any related services we provide. By downloading, accessing, or using the App, you agree to be bound by these Terms and our Privacy Policy. If you do not agree, please do not use the App.\n\n
 1. Purpose of the App\n
 • Promote awareness of local parking rules\n
@@ -135,7 +153,8 @@ New South Wales, Australia.\n\n
 12. Contact\n
 admin@parkaware.app</string>
 
-    <string name="privacy_body">Effective Date: 01/07/2025\n\n
+<string name="privacy_title">Privacy</string>
+<string name="privacy_body">Effective Date: 01/07/2025\n\n
 ParkAware (“we,” “our,” or “us”) respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information when you use our mobile application (“App”).\n\n
 1. Information We Collect\n
 • Account info (name, email, sign-in)\n
@@ -160,18 +179,23 @@ We may update this policy from time to time.\n\n
 9. Contact Us\n
 admin@parkaware.app</string>
 
-    <!-- Settings -->
-    <string name="action_settings">Settings</string>
+<!-- Sign in -->
+<string name="signin_subtitle">Choose how you’d like to sign in</string>
+<string name="signin_google">Sign in with Google</string>
+<string name="signin_guest">Continue as Guest</string>
+<string name="signin_failed_google">Google sign-in failed. Please try again.</string>
+<string name="signin_failed_anon">Couldn’t continue as guest. Please try again.</string>
 
-    <!-- Sign in -->
-    <string name="signin_subtitle">Choose how you’d like to sign in</string>
-    <string name="signin_google">Sign in with Google</string>
-    <string name="signin_guest">Continue as Guest</string>
-    <string name="signin_failed_google">Google sign-in failed. Please try again.</string>
-    <string name="signin_failed_anon">Couldn’t continue as guest. Please try again.</string>
-    <string name="parking_education">Parking Education</string>
-    <string name="education_header">ParkAware Education</string>
-    <string name="filter_sightings">Filter Sightings</string>
-    <string name="report_sighting">Report a Sighting</string>
-    <string name="set_parking_reminder">Set a Parking Reminder</string>
+<!-- Misc UI -->
+<string name="parking_education">Parking Education</string>
+<string name="education_header">ParkAware Education</string>
+<string name="filter_sightings">Filter Sightings</string>
+<string name="report_sighting">Report a Sighting</string>
+<string name="set_parking_reminder">Set a Parking Reminder</string>
+<string name="help_feedback_title">Help and Feedback</string>
+<string name="community_settings_title">Community</string>
+<string name="parking_reminders_title">Parking Reminders</string>
+<string name="sighting_settings_title">Sightings Settings</string>
+<string name="action_settings">Settings</string>
+
 </resources>

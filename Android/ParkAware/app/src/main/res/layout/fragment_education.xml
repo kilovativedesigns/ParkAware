@@ -4,22 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/pa_background"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".ui.education.EducationFragment">
 
     <!-- Toolbar header, same height/placement as Settings -->
 
     <!-- Category list -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/edu_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/pa_background"
-        app:contentInsetStart="0dp"
-        app:title="ParkAware Education"
-        app:titleTextAppearance="@style/ToolbarTitleRoboto"
-        app:titleTextColor="?attr/colorOnSurface" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/edu_list"

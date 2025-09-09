@@ -4,6 +4,8 @@
     <!-- Light (base) -->
     <style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/pa_background</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -12,6 +14,9 @@
 
     <!-- Dark (base) -->
     <style name="Theme.MyApp.Dark" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/pa_background</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
