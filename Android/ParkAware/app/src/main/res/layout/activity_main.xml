@@ -24,7 +24,7 @@
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
             app:titleTextColor="?attr/colorOnSurface"
             app:navigationIconTint="?attr/colorOnSurface" />
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

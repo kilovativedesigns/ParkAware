@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -34,20 +35,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Nav setup
+        // Nav controller
         val navHost = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.navController
 
-        // Top-level destinations (no up arrow)
+        // Top-level tabs (no Up arrow there)
         appBarConfig = AppBarConfiguration(
             setOf(R.id.tab_home, R.id.tab_sightings, R.id.tab_rules, R.id.tab_settings)
         )
 
-        // Wire toolbar to NavController (for navigation/back arrow)
+        // Hook toolbar + bottom nav to NavController
         NavigationUI.setupWithNavController(binding.topAppBar, navController, appBarConfig)
-
-        // Wire bottom nav to NavController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
         // System bar icon contrast
@@ -57,71 +56,38 @@ class MainActivity : AppCompatActivity() {
             isAppearanceLightNavigationBars = !isDark
         }
 
-        // ----- Window Insets handling -----
-        val navHostView = findViewById<View>(R.id.nav_host_fragment)
-
-        var lastTop = 0
-        var lastLeft = 0
-        var lastRight = 0
-        var lastBottom = 0
-
-        // Toolbar gets TOP inset when visible
-        ViewCompat.setOnApplyWindowInsetsListener(binding.topAppBar) { v, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            lastTop = bars.top; lastLeft = bars.left; lastRight = bars.right; lastBottom = bars.bottom
-            if (binding.topAppBar.visibility == View.VISIBLE) {
-                v.updatePadding(top = bars.top, left = bars.left, right = bars.right)
-            } else {
-                v.setPadding(0, 0, 0, 0)
-            }
+        // Insets: status bar -> app bar padding; gesture bar -> bottom nav padding
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { v, insets ->
+            val sys = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.updatePadding(top = sys.top)
             insets
         }
-
-        // Content gets side/bottom always; gets TOP only when toolbar is hidden
-        ViewCompat.setOnApplyWindowInsetsListener(navHostView) { v, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val giveTopToContent = binding.topAppBar.visibility != View.VISIBLE
-            v.updatePadding(
-                left = bars.left,
-                right = bars.right,
-                bottom = bars.bottom,
-                top = if (giveTopToContent) bars.top else 0
-            )
-            insets
-        }
-
-        // Bottom nav gets bottom inset (for gesture nav)
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(left = bars.left, right = bars.right, bottom = bars.bottom)
+            val sys = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            v.updatePadding(left = sys.left, right = sys.right, bottom = sys.bottom)
             insets
         }
-        // ----------------------------------
 
-        // Show/hide toolbar on destination changes + set the title explicitly
-        navController.addOnDestinationChangedListener { _, destination, arguments ->
+        // Robust titles + show/hide toolbar on destinations
+        navController.addOnDestinationChangedListener { _, destination, args ->
             val showToolbar = destination.id != R.id.tab_home
             binding.topAppBar.visibility = if (showToolbar) View.VISIBLE else View.GONE
-            binding.topAppBar.setTitleTextColor(
-                androidx.core.content.ContextCompat.getColor(this, android.R.color.white)
-            )
 
-            // Force title so it never shows blank (handles labels like "{title}")
-            val explicitTitle =
-                arguments?.getString("title")  // for educationDetailFragment
-                    ?: destination.label?.toString()
-                    ?: ""
+            // Prefer arg "title" (e.g., detail screens), otherwise label, otherwise fallback by id
+            val computedTitle =
+                args?.getString("title")?.takeIf { it.isNotBlank() }
+                    ?: destination.label?.toString()?.takeIf { it.isNotBlank() }
+                    ?: when (destination.id) {
+                        R.id.tab_sightings -> getString(R.string.recent_sightings)
+                        R.id.tab_rules     -> getString(R.string.education)
+                        R.id.tab_settings  -> getString(R.string.settings_title)
+                        else               -> "" // Home shows no title
+                    }
 
-            binding.topAppBar.title = if (showToolbar) explicitTitle else ""
+            binding.topAppBar.title = if (showToolbar) computedTitle else ""
 
-            // Reapply insets depending on toolbar visibility
-            if (showToolbar) {
-                binding.topAppBar.updatePadding(top = lastTop, left = lastLeft, right = lastRight)
-                navHostView.updatePadding(top = 0, left = lastLeft, right = lastRight, bottom = lastBottom)
-            } else {
-                binding.topAppBar.setPadding(0, 0, 0, 0)
-                navHostView.updatePadding(top = lastTop, left = lastLeft, right = lastRight, bottom = lastBottom)
-            }
+            // (Optional) If you ever suspect theme issues, uncomment to force a visible color:
+            // binding.topAppBar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white))
         }
     }
 

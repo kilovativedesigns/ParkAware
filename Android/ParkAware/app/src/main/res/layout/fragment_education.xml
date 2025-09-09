@@ -15,7 +15,7 @@
         android:id="@+id/edu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="0dp"
         android:background="@color/pa_background"
         android:baselineAligned="false"
         android:clipToPadding="false"
