@@ -9,8 +9,6 @@
     tools:ignore="ExtraText">
     android:fitsSystemWindows="true">
 
-    <!-- Screen title -->
-
     <!-- The list the fragment code expects -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
