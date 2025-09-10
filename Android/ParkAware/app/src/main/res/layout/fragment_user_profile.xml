@@ -103,7 +103,7 @@
 
                 <!-- Single toggle: text becomes Sign In / Sign Out in code -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSignOut"
+                    android:id="@+id/btnAuth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sign In"
@@ -119,7 +119,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Delete Account"
                     android:textColor="@color/pa_surface"
-                    app:backgroundTint="@android:color/holo_red_dark"
+                    app:backgroundTint="#FF0000"
                     app:cornerRadius="20dp"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Upgrade to Pro"
-                    app:backgroundTint="@color/warm_coral"
+                    app:backgroundTint="@color/base_teal"
                     app:cornerRadius="20dp"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp" />

@@ -4,9 +4,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
@@ -22,7 +27,6 @@ class UserProfileFragment : Fragment() {
     private var _b: FragmentUserProfileBinding? = null
     private val b get() = _b!!
 
-    // pick from gallery
     private val pickImage = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? -> uri?.let { loadAvatarFromUri(it) } }
@@ -33,13 +37,19 @@ class UserProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Clicks
+        // System back -> up
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
+        // Change avatar
         b.btnChangeAvatar.setOnClickListener { pickImage.launch("image/*") }
 
-        // 🚦 ONE toggle button: shows "Sign In" when signed out, "Sign Out" when signed in
-        b.btnSignOut.setOnClickListener {
+        // Single toggle: Sign In when signed out/anonymous, Sign Out when fully signed in
+        b.btnAuth.setOnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
-            if (user == null) {
+            val needsSignIn = user == null || user.isAnonymous
+            if (needsSignIn) {
                 navigateToSignIn()
             } else {
                 signOut()
@@ -48,10 +58,10 @@ class UserProfileFragment : Fragment() {
         }
 
         b.btnDeleteAccount.setOnClickListener { confirmDelete() }
-        b.btnUpgrade.setOnClickListener { /* TODO: Billing flow */ }
-        b.btnRestore.setOnClickListener { /* TODO: Restore purchases */ }
+        b.btnUpgrade.setOnClickListener { /* TODO billing */ }
+        b.btnRestore.setOnClickListener { /* TODO restore */ }
 
-        // simple name validation
+        // Name validation
         b.etUserName.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val name = b.etUserName.text?.toString()?.trim().orEmpty()
@@ -62,12 +72,45 @@ class UserProfileFragment : Fragment() {
         loadUserState()
     }
 
-    // --- state ---------------------------------------------------------------
+    // ---- nav to Sign In on the ROOT controller (the one in MainActivity) ---
+    private fun navigateToSignIn() {
+        val rootNav: NavController = (
+                requireActivity()
+                    .supportFragmentManager
+                    .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                ).navController
 
+        when {
+            rootNav.graph.findNode(R.id.signInFragment) != null -> {
+                rootNav.navigate(
+                    R.id.signInFragment,
+                    null,
+                    navOptions {
+                        // Keep the back stack sane (optional)
+                        popUpTo(R.id.homeFragment) { inclusive = false }
+                    }
+                )
+            }
+            rootNav.graph.findNode(R.id.deciderFragment) != null -> {
+                // Fallback path: Decider will route to SignIn if needed
+                rootNav.navigate(
+                    R.id.deciderFragment,
+                    null,
+                    navOptions { popUpTo(R.id.homeFragment) { inclusive = false } }
+                )
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Sign-in flow not found", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // --- state ---------------------------------------------------------------
     private fun loadUserState() {
         val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            b.etUserId.setText("Not signed in")
+
+        if (user == null || user.isAnonymous) {
+            b.etUserId.setText(if (user?.isAnonymous == true) "Guest" else "Not signed in")
             b.tvPlan.text = "Subscription Status: Free"
             b.etUserName.setText("")
             b.imgAvatar.setImageResource(R.drawable.ic_person_24)
@@ -75,11 +118,7 @@ class UserProfileFragment : Fragment() {
             return
         }
 
-        val id = when {
-            user.isAnonymous -> "Guest"
-            !user.email.isNullOrBlank() -> user.email!!
-            else -> user.uid
-        }
+        val id = user.email?.takeIf { it.isNotBlank() } ?: user.uid
         b.etUserId.setText(id)
         b.etUserName.setText(user.displayName ?: "")
         b.tvPlan.text = "Subscription Status: Free"
@@ -88,14 +127,14 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun updateAuthUi() {
-        val signedIn = FirebaseAuth.getInstance().currentUser != null
-        b.btnSignOut.text = if (signedIn) "Sign Out" else "Sign In"
+        val user = FirebaseAuth.getInstance().currentUser
+        val signedIn = user != null && !user.isAnonymous
+        b.btnAuth.text = if (signedIn) "Sign Out" else "Sign In"
         b.btnDeleteAccount.isEnabled = signedIn
         b.btnDeleteAccount.alpha = if (signedIn) 1f else 0.5f
     }
 
     // --- avatar i/o ----------------------------------------------------------
-
     private fun avatarFile(): File {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: "guest"
         return File(requireContext().filesDir, "$uid.avatar.jpg")
@@ -111,7 +150,7 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun loadAvatarFromUri(uri: Uri) {
-        val bmp: Bitmap? = requireContext().contentResolver.openInputStream(uri)?.use {
+        val bmp = requireContext().contentResolver.openInputStream(uri)?.use {
             BitmapFactory.decodeStream(it)
         }
         if (bmp != null) {
@@ -123,42 +162,12 @@ class UserProfileFragment : Fragment() {
     }
 
     // --- auth actions --------------------------------------------------------
-
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         b.etUserName.setText("")
         b.etUserId.setText("Not signed in")
         b.tvPlan.text = "Subscription Status: Free"
         b.imgAvatar.setImageResource(R.drawable.ic_person_24)
-    }
-
-    private fun navigateToSignIn() {
-        val rootHost = requireActivity()
-            .supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
-        val rootNav = rootHost?.navController
-
-        val destId = R.id.signInFragment
-        val poppedToDecider = navOptions {
-            popUpTo(R.id.deciderFragment) { inclusive = true }
-        }
-
-        when {
-            rootNav?.graph?.findNode(destId) != null -> {
-                rootNav.navigate(destId, null, poppedToDecider)
-            }
-            findNavController().graph.findNode(destId) != null -> {
-                findNavController().navigate(destId)
-            }
-            else -> {
-                val deciderId = R.id.deciderFragment
-                if (rootNav?.graph?.findNode(deciderId) != null) {
-                    rootNav.navigate(deciderId, null, poppedToDecider)
-                } else if (findNavController().graph.findNode(deciderId) != null) {
-                    findNavController().navigate(deciderId)
-                }
-            }
-        }
     }
 
     private fun confirmDelete() {
