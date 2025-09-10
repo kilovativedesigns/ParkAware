@@ -96,8 +96,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:text="Copy"
+                            android:textColor="#040000"
+                            app:backgroundTint="@color/dark_teal"
                             app:icon="@drawable/ic_copy"
-                            app:iconGravity="textStart" />
+                            app:iconGravity="textStart"
+                            app:iconTint="#000000" />
                     </LinearLayout>
 
                     <!-- Share row (clickable container) -->
