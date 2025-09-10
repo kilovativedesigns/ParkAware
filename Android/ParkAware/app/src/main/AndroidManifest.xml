@@ -6,12 +6,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Location (fine+coarse).  Background is NOT requested here. -->
+    <!-- Location (fine+coarse). Request BACKGROUND at runtime only if you truly need it. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- If you decide to support continuous updates while app is in the background, also declare: -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
 
-    <!-- Android 13+ notifications run-time permission -->
+    <!-- Notifications (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Foreground service for live location -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Android 10+ granular type -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -30,15 +37,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <!-- Preloaded fonts (your existing resource) -->
+        <!-- Preloaded fonts -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <!-- FCM: default notification presentation (fallbacks if server sends "notification" payload) -->
+        <!-- FCM defaults (used if your server sends "notification" payloads) -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="ranger_reports" />
+        <!-- Use your small status-bar icon; mipmap is fine -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
@@ -46,7 +54,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/pa_text_primary" />
 
-        <!-- Your main launcher activity -->
+        <!-- Launcher Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -64,6 +72,12 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <!-- Foreground location tracking service (follows the user & updates Hash5 subscriptions) -->
+        <service
+            android:name=".location.LocationTrackerService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
 
     </application>
 </manifest>
