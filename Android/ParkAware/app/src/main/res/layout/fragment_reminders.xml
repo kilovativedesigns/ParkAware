@@ -6,12 +6,6 @@
     android:orientation="vertical">
 
     <!-- Top bar with back arrow -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarReminders"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/reminders_title"
-        app:navigationIcon="@drawable/ic_arrow_back_24" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/pa_background"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -41,8 +36,8 @@
                     android:id="@+id/etMinutes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="@string/rem_minutes_hint"/>
+                    android:hint="@string/rem_minutes_hint"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView

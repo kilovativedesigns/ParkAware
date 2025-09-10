@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.kilovativedesigns.parkaware.R
 import com.kilovativedesigns.parkaware.databinding.FragmentRemindersBinding
@@ -55,21 +53,6 @@ class RemindersFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Back arrow in toolbar
-        b.toolbarReminders.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-
-        // Handle system back button the same way
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigateUp()
-                }
-            }
-        )
-
         // --- load initial values ---
         val enabled = LocalPrefs.loadEnabled(requireContext())
         val minutes = LocalPrefs.loadMinutes(requireContext())
@@ -116,5 +99,8 @@ class RemindersFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() { _b = null; super.onDestroyView() }
+    override fun onDestroyView() {
+        _b = null
+        super.onDestroyView()
+    }
 }

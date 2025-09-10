@@ -5,22 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/pa_background"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="About ParkAware"
-        app:titleTextColor="?attr/colorOnSurface" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/pa_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/pa_background"
             android:orientation="vertical"
             android:padding="16dp">
 

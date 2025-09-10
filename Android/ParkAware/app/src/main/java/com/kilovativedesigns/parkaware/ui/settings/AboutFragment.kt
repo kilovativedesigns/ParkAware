@@ -26,10 +26,7 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Back arrow
-        b.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        // No local toolbar anymore — MainActivity’s topAppBar shows title/back.
 
         // Row clicks → nav destinations defined in tabs_nav_graph.xml
         b.rowAbout.setOnClickListener {

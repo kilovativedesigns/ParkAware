@@ -3,23 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/pa_background">
 
-    <!-- Toolbar at the top -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/pa_background"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="About ParkAware"
-        app:titleTextColor="@android:color/black" />
-
-    <!-- Scrollable content below -->
+    <!-- Scrollable content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/pa_background">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,7 +36,9 @@
                         android:id="@+id/rowAbout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/pa_background"
                         android:gravity="center_vertical"
+
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="14dp">
 
@@ -83,6 +75,7 @@
                         android:id="@+id/rowDisclaimer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/pa_background"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="14dp">
@@ -110,6 +103,7 @@
                         android:id="@+id/rowTerms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/pa_background"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="14dp">
@@ -137,6 +131,7 @@
                         android:id="@+id/rowPrivacy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/pa_background"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="14dp">
@@ -160,5 +155,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

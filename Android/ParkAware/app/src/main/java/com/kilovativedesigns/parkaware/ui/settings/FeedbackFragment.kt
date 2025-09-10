@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.kilovativedesigns.parkaware.databinding.FragmentFeedbackBinding
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -37,22 +36,22 @@ class FeedbackFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Back arrow
-        b.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
-
         // Enable/disable Send button based on message content
         val updateEnabled: () -> Unit = {
             b.btnSend.isEnabled = b.etMessage.text?.toString()?.isNotBlank() == true
         }
         b.etMessage.addTextChangedListener { updateEnabled() }
-        b.etSubject.addTextChangedListener { /* keep for future validation */ }
+        b.etSubject.addTextChangedListener { /* reserved for future validation */ }
         updateEnabled()
 
         // IME next from subject -> message
         b.etSubject.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                b.etMessage.requestFocus(); true
-            } else false
+                b.etMessage.requestFocus()
+                true
+            } else {
+                false
+            }
         }
 
         b.btnSend.setOnClickListener {
@@ -73,14 +72,12 @@ class FeedbackFragment : Fragment() {
         // Target only email apps
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(mailto)
-            // Extras are optional; some clients read them, some ignore in favor of the URI.
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, message)
         }
 
         try {
-            // Verify there is at least one handler and launch
             val pm = requireContext().packageManager
             if (intent.resolveActivity(pm) != null) {
                 startActivity(Intent.createChooser(intent, "Send email"))

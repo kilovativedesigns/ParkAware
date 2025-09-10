@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.kilovativedesigns.parkaware.databinding.FragmentSocialSettingsBinding
 
 class SocialSettingsFragment : Fragment() {
@@ -32,9 +31,6 @@ class SocialSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Back arrow → navigate up
-        b.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-
         // Copy referral code
         b.btnCopy.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -48,14 +44,10 @@ class SocialSettingsFragment : Fragment() {
         }
 
         // Open Instagram
-        b.btnInstagram.setOnClickListener {
-            openInstagram()
-        }
+        b.btnInstagram.setOnClickListener { openInstagram() }
 
         // Open Play Store / App Store
-        b.btnRate.setOnClickListener {
-            openAppStore()
-        }
+        b.btnRate.setOnClickListener { openAppStore() }
     }
 
     private fun copyReferralCode() {
