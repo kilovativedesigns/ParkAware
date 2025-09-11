@@ -1,4 +1,4 @@
-package com.kilovativedesigns.parkaware.util
+package com.kilovativedesigns.parkaware.push
 
 import android.os.Build
 import android.util.Log

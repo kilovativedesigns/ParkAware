@@ -55,4 +55,10 @@
             android:id="@+id/action_homeFragment_self"
             app:destination="@id/homeFragment" />
     </fragment>
+
+    <!-- GLOBAL action usable from anywhere in this graph -->
+    <action
+        android:id="@+id/action_global_signInFragment"
+        app:destination="@id/signInFragment" />
+
 </navigation>

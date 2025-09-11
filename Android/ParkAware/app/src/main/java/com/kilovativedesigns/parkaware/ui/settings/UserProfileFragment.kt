@@ -7,18 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.kilovativedesigns.parkaware.R
 import com.kilovativedesigns.parkaware.databinding.FragmentUserProfileBinding
+import com.kilovativedesigns.parkaware.ui.auth.SignInBottomSheet
 import java.io.File
 import java.io.FileOutputStream
 
@@ -42,6 +39,17 @@ class UserProfileFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        // Listen for auth result from the bottom sheet and refresh UI
+        parentFragmentManager.setFragmentResultListener(
+            SignInBottomSheet.RESULT_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val ok = bundle.getBoolean(SignInBottomSheet.RESULT_OK, false)
+            if (ok) {
+                loadUserState()
+            }
+        }
+
         // Change avatar
         b.btnChangeAvatar.setOnClickListener { pickImage.launch("image/*") }
 
@@ -50,7 +58,7 @@ class UserProfileFragment : Fragment() {
             val user = FirebaseAuth.getInstance().currentUser
             val needsSignIn = user == null || user.isAnonymous
             if (needsSignIn) {
-                navigateToSignIn()
+                showSignInSheet()
             } else {
                 signOut()
                 updateAuthUi()
@@ -72,37 +80,9 @@ class UserProfileFragment : Fragment() {
         loadUserState()
     }
 
-    // ---- nav to Sign In on the ROOT controller (the one in MainActivity) ---
-    private fun navigateToSignIn() {
-        val rootNav: NavController = (
-                requireActivity()
-                    .supportFragmentManager
-                    .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                ).navController
-
-        when {
-            rootNav.graph.findNode(R.id.signInFragment) != null -> {
-                rootNav.navigate(
-                    R.id.signInFragment,
-                    null,
-                    navOptions {
-                        // Keep the back stack sane (optional)
-                        popUpTo(R.id.homeFragment) { inclusive = false }
-                    }
-                )
-            }
-            rootNav.graph.findNode(R.id.deciderFragment) != null -> {
-                // Fallback path: Decider will route to SignIn if needed
-                rootNav.navigate(
-                    R.id.deciderFragment,
-                    null,
-                    navOptions { popUpTo(R.id.homeFragment) { inclusive = false } }
-                )
-            }
-            else -> {
-                Toast.makeText(requireContext(), "Sign-in flow not found", Toast.LENGTH_SHORT).show()
-            }
-        }
+    // ---- show sign-in bottom sheet ----
+    private fun showSignInSheet() {
+        SignInBottomSheet().show(parentFragmentManager, "signInSheet")
     }
 
     // --- state ---------------------------------------------------------------

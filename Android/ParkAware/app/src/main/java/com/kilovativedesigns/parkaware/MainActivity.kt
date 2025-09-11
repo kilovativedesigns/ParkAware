@@ -1,12 +1,13 @@
 package com.kilovativedesigns.parkaware
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,6 +19,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.kilovativedesigns.parkaware.databinding.ActivityMainBinding
+import com.kilovativedesigns.parkaware.push.FcmTokenManager
+import com.kilovativedesigns.parkaware.push.FcmTopicManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,12 +71,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Robust titles + show/hide toolbar on destinations
+        // Titles + show/hide toolbar per destination
         navController.addOnDestinationChangedListener { _, destination, args ->
             val showToolbar = destination.id != R.id.tab_home
             binding.topAppBar.visibility = if (showToolbar) View.VISIBLE else View.GONE
 
-            // Prefer arg "title" (e.g., detail screens), otherwise label, otherwise fallback by id
             val computedTitle =
                 args?.getString("title")?.takeIf { it.isNotBlank() }
                     ?: destination.label?.toString()?.takeIf { it.isNotBlank() }
@@ -85,13 +87,33 @@ class MainActivity : AppCompatActivity() {
                     }
 
             binding.topAppBar.title = if (showToolbar) computedTitle else ""
-
-            // (Optional) If you ever suspect theme issues, uncomment to force a visible color:
-            // binding.topAppBar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white))
         }
+
+        // --- Notifications / FCM bootstrap ---
+        createNotificationChannelIfNeeded()               // ensure channel "reports" exists
+        FcmTokenManager.storeCurrentTokenIfSignedIn()     // upload token if we have a signed-in user
+        FcmTopicManager.refreshFromPrefs(this)            // re-subscribe to saved geo5_ topic
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfig) || super.onSupportNavigateUp()
+    }
+
+    /**
+     * Creates the notification channel used by server payloads that specify
+     * android.notification.channelId = "reports" (kept in sync with Functions/iOS).
+     */
+    private fun createNotificationChannelIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            val nm = getSystemService(NotificationManager::class.java)
+            val channel = NotificationChannel(
+                "reports", // IMPORTANT: must match the channelId used by your Cloud Function
+                getString(R.string.channel_ranger_reports_name),
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = getString(R.string.channel_ranger_reports_desc)
+            }
+            nm.createNotificationChannel(channel) // idempotent
+        }
     }
 }

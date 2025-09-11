@@ -1,8 +1,7 @@
-package com.kilovativedesigns.parkaware.util
+package com.kilovativedesigns.parkaware.push
 
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlin.math.abs
 
 /**
  * Subscribes the device to an FCM topic representing a GeoHash-5 tile.
@@ -54,7 +53,7 @@ object FcmTopicManager {
             .edit().putString(KEY_TOPIC, topic).apply()
     }
 
-    private fun topicFor(lat: Double, lon: Double): String = "h5_${geoHash5(lat, lon)}"
+    private fun topicFor(lat: Double, lon: Double): String = "geo5_${geoHash5(lat, lon)}"
 
     /**
      * Minimal GeoHash encoder (length=5).

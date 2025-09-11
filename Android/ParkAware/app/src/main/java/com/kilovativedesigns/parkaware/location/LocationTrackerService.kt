@@ -13,7 +13,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kilovativedesigns.parkaware.MainActivity
 import com.kilovativedesigns.parkaware.R
-import com.kilovativedesigns.parkaware.util.FcmTopicManager
 
 class LocationTrackerService : Service() {
 

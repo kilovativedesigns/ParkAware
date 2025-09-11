@@ -45,7 +45,7 @@
         <!-- FCM defaults (used if your server sends "notification" payloads) -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="ranger_reports" />
+            android:value="reports" />
         <!-- Use your small status-bar icon; mipmap is fine -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
