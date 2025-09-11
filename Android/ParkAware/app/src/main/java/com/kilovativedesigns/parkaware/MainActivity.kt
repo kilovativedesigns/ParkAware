@@ -18,15 +18,25 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
+import com.google.firebase.auth.FirebaseAuth
 import com.kilovativedesigns.parkaware.databinding.ActivityMainBinding
 import com.kilovativedesigns.parkaware.push.FcmTokenManager
 import com.kilovativedesigns.parkaware.push.FcmTopicManager
+import com.kilovativedesigns.parkaware.util.AppEvents
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfig: AppBarConfiguration
+
+    // Emit a global event any time FirebaseAuth user changes (sign in/out)
+    private val authListener = FirebaseAuth.AuthStateListener {
+        AppEvents.emitAuthChanged()
+        // Optionally refresh token/topic immediately as well:
+        FcmTokenManager.storeCurrentTokenIfSignedIn()
+        FcmTopicManager.refreshFromPrefs(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +103,16 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannelIfNeeded()               // ensure channel "reports" exists
         FcmTokenManager.storeCurrentTokenIfSignedIn()     // upload token if we have a signed-in user
         FcmTopicManager.refreshFromPrefs(this)            // re-subscribe to saved geo5_ topic
+    }
+
+    override fun onStart() {
+        super.onStart()
+        FirebaseAuth.getInstance().addAuthStateListener(authListener)
+    }
+
+    override fun onStop() {
+        FirebaseAuth.getInstance().removeAuthStateListener(authListener)
+        super.onStop()
     }
 
     override fun onSupportNavigateUp(): Boolean {

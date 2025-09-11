@@ -7,17 +7,21 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -38,17 +43,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.kilovativedesigns.parkaware.R
 import com.kilovativedesigns.parkaware.data.model.Report
 import com.kilovativedesigns.parkaware.databinding.FragmentMapBinding
+import com.kilovativedesigns.parkaware.reminders.ReminderManager
 import com.kilovativedesigns.parkaware.sightings.SightingsViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import androidx.appcompat.content.res.AppCompatResources
-
-// ---- Optional (dark-mode map styling) --------------------------------------
 import android.content.res.Configuration
-import com.google.android.gms.maps.model.MapStyleOptions
-// ---------------------------------------------------------------------------
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.K_DISTANCE_KM
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.K_SHOW_CHALK
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.K_SHOW_FINES
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.K_SHOW_OFFICER
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.K_TIME_SECS
+import com.kilovativedesigns.parkaware.ui.map.FilterBottomSheet.Companion.RESULT_KEY
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
 
 class MapFragment : Fragment() {
 
@@ -61,6 +72,26 @@ class MapFragment : Fragment() {
 
     private val markerMap = mutableMapOf<String, Marker>()
     private val timeFmt = SimpleDateFormat("MMM d, h:mm a", Locale.getDefault())
+
+    // NEW: keep user location (so distance filter can be relative to user)
+    private var lastUserLoc: Location? = null
+
+    // NEW: current filter (defaults: 3h, 10km, all types)
+    private var filter = FilterState(
+        timeSeconds = 60L * 60L * 3L,
+        distanceKm = 10,
+        showOfficer = true,
+        showChalk = true,
+        showFines = true
+    )
+
+    data class FilterState(
+        val timeSeconds: Long,
+        val distanceKm: Int,
+        val showOfficer: Boolean,
+        val showChalk: Boolean,
+        val showFines: Boolean
+    )
 
     // Keep all FABs above the map surface
     private fun liftFabs() {
@@ -128,37 +159,144 @@ class MapFragment : Fragment() {
 
             // draw any existing reports immediately (no camera movement)
             val s0 = vm.uiState.value
-            if (s0.reports.isNotEmpty()) updateMarkers(s0.reports)
+            if (s0.reports.isNotEmpty()) applyFiltersAndUpdateMarkers(s0.reports)
 
             // keep fabs above the map surface
             liftFabs()
         }
 
-        // redraw markers when the reports flow updates
+        // Listen for filter results from the sheet
+        setFragmentResultListener(RESULT_KEY) { _, bundle ->
+            val t = bundle.getLong(K_TIME_SECS, filter.timeSeconds)
+            val d = bundle.getInt(K_DISTANCE_KM, filter.distanceKm)
+            val so = bundle.getBoolean(K_SHOW_OFFICER, filter.showOfficer)
+            val sc = bundle.getBoolean(K_SHOW_CHALK, filter.showChalk)
+            val sf = bundle.getBoolean(K_SHOW_FINES, filter.showFines)
+            filter = filter.copy(
+                timeSeconds = t,
+                distanceKm = d,
+                showOfficer = so,
+                showChalk = sc,
+                showFines = sf
+            )
+            // Re-apply on current list
+            val s0 = vm.uiState.value
+            applyFiltersAndUpdateMarkers(s0.reports)
+        }
+
+        // redraw markers when the reports flow updates (apply filters)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                vm.uiState.collect { state -> updateMarkers(state.reports) }
+                vm.uiState.collect { state -> applyFiltersAndUpdateMarkers(state.reports) }
             }
         }
 
         // FAB: My Location
         b.fabMyLocation.setOnClickListener { enableMyLocationAndCenter() }
 
-        // FAB: Report (was old setReminder FAB)
+        // FAB: Report
         b.fabReport.setOnClickListener { showReportSheet() }
 
-        // NEW FAB: Parking Reminder
-        b.fabSetReminder.setOnClickListener { showParkingReminder() }
+        // FAB: Parking Reminder (with haptic + schedule/route logic)
+        b.fabSetReminder.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            handleReminderFabTap()
+        }
 
-        // NEW FAB: Filters
+        // FAB: Filters → open sheet
         b.fabFilter.setOnClickListener { openFilterScreen() }
 
         // Also lift after first layout to be safe
         b.mapRoot.post { liftFabs() }
     }
 
+    // ---- Parking Reminder logic --------------------------------------------
+
+    private fun handleReminderFabTap() {
+        val enabled = LocalPrefs.loadEnabled(requireContext())
+        val minutes = LocalPrefs.loadMinutes(requireContext())
+
+        if (!enabled) {
+            Snackbar.make(b.mapRoot, "Parking reminders are off.", Snackbar.LENGTH_LONG)
+                .setAction("Configure") {
+                    findNavController().navigate(R.id.remindersFragment)
+                }
+                .show()
+            return
+        }
+
+        if (minutes <= 0) {
+            Snackbar.make(b.mapRoot, "Set a valid reminder time.", Snackbar.LENGTH_LONG)
+                .setAction("Configure") {
+                    findNavController().navigate(R.id.remindersFragment)
+                }
+                .show()
+            return
+        }
+
+        // Schedule the reminder (mirror iOS behavior: minutes * 60)
+        val seconds = minutes * 60L
+        ReminderManager.schedule(requireContext(), seconds)
+
+        Snackbar.make(
+            b.mapRoot,
+            getString(R.string.rem_scheduled_fmt, minutes), // e.g., "Reminder set for 30 min"
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+    // ---- Optional helpers for dark-mode map styling ------------------------
+    private fun isNightMode(): Boolean {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return mode == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    private fun applyMapStyle(map: GoogleMap) {
+        val styleRes = if (isNightMode()) R.raw.map_style_dark else R.raw.map_style_light
+        runCatching {
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), styleRes))
+        }.onFailure {
+            android.util.Log.w("MapFragment", "Map style load failed", it)
+        }
+    }
     // ------------------------------------------------------------------------
-    // Bottom sheet for reporting (with icons + themed colors)
+
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density).toInt()
+
+    // ------------------------------------------------------------------------
+    // Permissions + My Location
+    // ------------------------------------------------------------------------
+    private fun hasLocationPermission(): Boolean {
+        val ctx = requireContext()
+        val fine = ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+        val coarse = ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+        return fine || coarse
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocationAndCenter() {
+        val map = gmap ?: return
+        if (!hasLocationPermission()) return
+        map.isMyLocationEnabled = true
+
+        val client = LocationServices.getFusedLocationProviderClient(requireActivity())
+        client.lastLocation.addOnSuccessListener { loc: Location? ->
+            loc?.let {
+                lastUserLoc = it
+                map.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
+                )
+                // re-apply filters with fresh location
+                applyFiltersAndUpdateMarkers(vm.uiState.value.reports)
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Reporting (keeps cross-platform Firestore shape)
     // ------------------------------------------------------------------------
     private fun showReportSheet() {
         val ctx = requireContext()
@@ -222,70 +360,6 @@ class MapFragment : Fragment() {
         sheet.show()
     }
 
-    // NEW: Parking Reminder entry (stub for now—hook to your UI or AlarmManager)
-    private fun showParkingReminder() {
-        // Example: show a bottom sheet with quick durations (15/30/60 mins) or navigate to a fragment
-        // findNavController().navigate(R.id.reminderFragment)
-        Snackbar.make(b.mapRoot, "Parking reminder...", Snackbar.LENGTH_SHORT).show()
-    }
-
-    // NEW: open filter screen (stub)
-    private fun openFilterScreen() {
-        // Navigate to your filter UI or open a dialog
-        // findNavController().navigate(R.id.filterFragment)
-        Snackbar.make(b.mapRoot, "Open filters…", Snackbar.LENGTH_SHORT).show()
-    }
-
-    // ---- Optional helpers for dark-mode map styling ------------------------
-    private fun isNightMode(): Boolean {
-        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
-
-    private fun applyMapStyle(map: GoogleMap) {
-        val styleRes = if (isNightMode()) R.raw.map_style_dark else R.raw.map_style_light
-        runCatching {
-            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), styleRes))
-        }.onFailure {
-            android.util.Log.w("MapFragment", "Map style load failed", it)
-        }
-    }
-    // ------------------------------------------------------------------------
-
-    private fun dp(value: Int): Int =
-        (value * resources.displayMetrics.density).toInt()
-
-    // ------------------------------------------------------------------------
-    // Permissions + My Location
-    // ------------------------------------------------------------------------
-    private fun hasLocationPermission(): Boolean {
-        val ctx = requireContext()
-        val fine = ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
-        val coarse = ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
-        return fine || coarse
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun enableMyLocationAndCenter() {
-        val map = gmap ?: return
-        if (!hasLocationPermission()) return
-        map.isMyLocationEnabled = true
-
-        val client = LocationServices.getFusedLocationProviderClient(requireActivity())
-        client.lastLocation.addOnSuccessListener { loc: Location? ->
-            loc?.let {
-                map.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
-                )
-            }
-        }
-    }
-
-    // ------------------------------------------------------------------------
-    // Reporting (keeps cross-platform Firestore shape)
-    // ------------------------------------------------------------------------
     private fun handleReportTap(kind: String) {
         if (!hasLocationPermission()) {
             Snackbar.make(b.mapRoot, "Location permission required to post a sighting.", Snackbar.LENGTH_LONG).show()
@@ -324,24 +398,22 @@ class MapFragment : Fragment() {
     private fun postReport(kind: String, loc: Location) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val nowTs = Timestamp.now()
-        val nowMs = System.currentTimeMillis() // optional client ms for Android-only uses
+        val nowMs = System.currentTimeMillis()
 
-        // Write in the SAME shape iOS uses, plus a few compat fields
         val report = hashMapOf(
-            // canonical fields used by iOS
-            "type" to kind,                  // e.g., "officer" | "chalk" | "fine"
+            "type" to kind,
             "lat" to loc.latitude,
-            "lon" to loc.longitude,          // iOS uses 'lon'
+            "lon" to loc.longitude,
             "userId" to uid,
             "sent" to true,
-            "timestamp" to nowTs,            // Firestore Timestamp
+            "timestamp" to nowTs,
             "createdAt" to nowTs,
 
-            // compatibility duplicates for older readers
+            // compatibility duplicates
             "rangerType" to kind,
             "lng" to loc.longitude,
             "longitude" to loc.longitude,
-            "timeReported" to nowMs          // old Android code may look at this
+            "timeReported" to nowMs
         )
 
         FirebaseFirestore.getInstance()
@@ -355,6 +427,56 @@ class MapFragment : Fragment() {
                 android.util.Log.e("MapFragment", "Report post FAILED", e)
                 Snackbar.make(b.mapRoot, "Failed to post: ${e.message}", Snackbar.LENGTH_LONG).show()
             }
+    }
+
+    // ------------------------------------------------------------------------
+    // Filters → apply + markers
+    // ------------------------------------------------------------------------
+    private fun openFilterScreen() {
+        FilterBottomSheet().show(parentFragmentManager, "filters")
+    }
+
+    // apply local filters, then update markers
+    private fun applyFiltersAndUpdateMarkers(source: List<Report>) {
+        val now = System.currentTimeMillis()
+        val cutoff = now - filter.timeSeconds * 1000L
+        val loc = lastUserLoc
+
+        val filtered = source.asSequence()
+            // time
+            .filter { r -> r.timeReported == 0L || r.timeReported >= cutoff }
+            // types
+            .filter { r ->
+                when (r.rangerType?.lowercase(Locale.getDefault())?.trim()) {
+                    "officer", "ranger", "inspector" -> filter.showOfficer
+                    "chalk", "chalking", "tyre", "tire" -> filter.showChalk
+                    "fine", "ticket" -> filter.showFines
+                    else -> true // unknown types shown
+                }
+            }
+            // extra distance cutoff (relative to user), if we know location
+            .filter { r ->
+                if (loc == null) return@filter true
+                val lat = r.lat ?: return@filter false
+                val lng = r.longitude ?: return@filter false
+                haversineKm(loc.latitude, loc.longitude, lat, lng) <= filter.distanceKm
+            }
+            .toList()
+
+        updateMarkers(filtered)
+    }
+
+    // Haversine distance in KM
+    private fun haversineKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371.0
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) +
+                cos(Math.toRadians(lat1)) *
+                cos(Math.toRadians(lat2)) *
+                sin(dLon / 2).pow(2.0)
+        val c = 2 * atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
+        return R * c
     }
 
     // ------------------------------------------------------------------------
@@ -422,5 +544,20 @@ class MapFragment : Fragment() {
     override fun onDestroyView() {
         _b = null
         super.onDestroyView()
+    }
+
+    // --- mirror of the small LocalPrefs helper you used in RemindersFragment ---
+    private object LocalPrefs {
+        private const val FILE = "reminders_prefs"
+        private const val K_ENABLED = "enabled"
+        private const val K_MINUTES = "minutes"
+
+        fun loadEnabled(ctx: android.content.Context) =
+            ctx.getSharedPreferences(FILE, android.content.Context.MODE_PRIVATE)
+                .getBoolean(K_ENABLED, false)
+
+        fun loadMinutes(ctx: android.content.Context) =
+            ctx.getSharedPreferences(FILE, android.content.Context.MODE_PRIVATE)
+                .getInt(K_MINUTES, 30)
     }
 }

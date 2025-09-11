@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Light (base) -->
-    <style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- App theme (DayNight, no action bar) -->
+    <style name="Theme.ParkAware" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- App background -->
         <item name="android:windowBackground">@color/pa_background</item>
+
+        <!-- App-wide font (optional if you have /res/font/roboto.ttf) -->
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
-        <item name="android:statusBarColor">@color/pa_background</item>
-        <item name="android:navigationBarColor">@color/pa_background</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Edge-to-edge: transparent bars; icons handled in code -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <!-- Dark (base) -->
-    <style name="Theme.MyApp.Dark" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- (Optional) Explicit dark variant if you ever want overrides -->
+    <style name="Theme.ParkAware.Dark" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/pa_background</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
     </style>
 
-    <!-- Your existing shape style -->
+    <!-- If you need a reusable rounded shape, base it on Material3 -->
     <style name="ShapeAppearance.ParkAware.MediumRound"
-        parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        parent="ShapeAppearance.Material3.Corner.Medium">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>

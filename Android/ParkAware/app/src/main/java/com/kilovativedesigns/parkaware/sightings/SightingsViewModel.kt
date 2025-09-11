@@ -3,6 +3,7 @@ package com.kilovativedesigns.parkaware.sightings
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -10,11 +11,17 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.kilovativedesigns.parkaware.data.model.Report
 import com.kilovativedesigns.parkaware.data.model.SightingsUiState
+import com.kilovativedesigns.parkaware.util.AppEvents
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class SightingsViewModel : ViewModel() {
 
@@ -36,11 +43,23 @@ class SightingsViewModel : ViewModel() {
     /** Keep the most recent unfiltered batch so we can re-filter when user location changes. */
     private var lastRawReports: List<Report> = emptyList()
 
-    init { observe() }
+    init {
+        // Initial attach
+        observe()
+
+        // Re-attach whenever auth state changes (sign-in / sign-out)
+        viewModelScope.launch {
+            AppEvents.authChanged.collect {
+                Log.d(TAG, "Auth changed → restarting Firestore listener")
+                observe()
+            }
+        }
+    }
 
     private fun observe() {
         _uiState.value = _uiState.value.copy(loading = true, error = null)
 
+        // Ensure only a single active listener
         reg?.remove()
         reg = db.collection(COLLECTION)
             .orderBy(TIME_FIELD, Query.Direction.DESCENDING)
@@ -118,8 +137,6 @@ class SightingsViewModel : ViewModel() {
                 else t
             }
 
-        // Use the parameter names your Report constructor actually has.
-        // (No 'longitude' named arg — set both 'lng' and 'lon' to be safe.)
         return Report(
             id = d.id,
             reporterID = d.getString("reporterID"),
@@ -150,7 +167,7 @@ class SightingsViewModel : ViewModel() {
             .asSequence()
             .filter { r ->
                 val rlat = r.lat
-                val rlng = r.longitude // your Map/adapter read this property
+                val rlng = r.longitude // your Map/adapter reads this property
                 if (rlat == null || rlng == null) return@filter false
                 rlat in minLat..maxLat && rlng in minLng..maxLng
             }

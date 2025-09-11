@@ -203,5 +203,20 @@ admin@parkaware.app</string>
     <string name="channel_ranger_reports_desc">Nearby Ranger Sightings and Alerts</string>
     <string name="notif_default_title">New Sighting Reported</string>
     <string name="notif_default_body">Check the Recent Sighting tab to view the recent reported sighting.</string>
+    <string name="filter_title">Map Filter</string>
+    <string name="filter_time_range">Time Range</string>
+    <string name="filter_1h">1hr</string>
+    <string name="filter_3h">3hr</string>
+    <string name="filter_24h">24hr</string>
+    <string name="filter_7d">7 Days</string>
+    <string name="filter_30d">30 Days</string>
+    <string name="filter_all_time">All Reports</string>
+    <string name="filter_distance">Distance</string>
+    <string name="filter_types">Report Type</string>
+    <string name="filter_show_officers">Rangers / Parking Officers</string>
+    <string name="filter_show_chalk">Tyre Chalking</string>
+    <string name="filter_show_fines">Fines Issued</string>
+    <string name="action_done">Done</string>
+    <string name="filter_distance_label">Distance Filter</string>
 
 </resources>
