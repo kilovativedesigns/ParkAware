@@ -73,10 +73,10 @@ class MapFragment : Fragment() {
     private val markerMap = mutableMapOf<String, Marker>()
     private val timeFmt = SimpleDateFormat("MMM d, h:mm a", Locale.getDefault())
 
-    // NEW: keep user location (so distance filter can be relative to user)
+    // keep user location for filter distance
     private var lastUserLoc: Location? = null
 
-    // NEW: current filter (defaults: 3h, 10km, all types)
+    // current filter (defaults: 3h, 10km, all types)
     private var filter = FilterState(
         timeSeconds = 60L * 60L * 3L,
         distanceKm = 10,
@@ -93,7 +93,6 @@ class MapFragment : Fragment() {
         val showFines: Boolean
     )
 
-    // Keep all FABs above the map surface
     private fun liftFabs() {
         val z = 2000f
         b.fabMyLocation.elevation = z
@@ -127,7 +126,6 @@ class MapFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Host/attach the Google Map
         val existing = childFragmentManager.findFragmentById(b.mapContainer.id)
         val mapFrag = if (existing is SupportMapFragment) existing else {
             val f = SupportMapFragment.newInstance()
@@ -143,8 +141,7 @@ class MapFragment : Fragment() {
             map.uiSettings.isCompassEnabled = true
             map.uiSettings.isMapToolbarEnabled = false
 
-            // Optionally style the map (dark/light)
-            // applyMapStyle(map)
+            // applyMapStyle(map) // optional
 
             if (hasLocationPermission()) {
                 enableMyLocationAndCenter()
@@ -157,15 +154,12 @@ class MapFragment : Fragment() {
                 )
             }
 
-            // draw any existing reports immediately (no camera movement)
             val s0 = vm.uiState.value
             if (s0.reports.isNotEmpty()) applyFiltersAndUpdateMarkers(s0.reports)
 
-            // keep fabs above the map surface
             liftFabs()
         }
 
-        // Listen for filter results from the sheet
         setFragmentResultListener(RESULT_KEY) { _, bundle ->
             val t = bundle.getLong(K_TIME_SECS, filter.timeSeconds)
             val d = bundle.getInt(K_DISTANCE_KM, filter.distanceKm)
@@ -179,38 +173,25 @@ class MapFragment : Fragment() {
                 showChalk = sc,
                 showFines = sf
             )
-            // Re-apply on current list
-            val s0 = vm.uiState.value
-            applyFiltersAndUpdateMarkers(s0.reports)
+            applyFiltersAndUpdateMarkers(vm.uiState.value.reports)
         }
 
-        // redraw markers when the reports flow updates (apply filters)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.uiState.collect { state -> applyFiltersAndUpdateMarkers(state.reports) }
             }
         }
 
-        // FAB: My Location
         b.fabMyLocation.setOnClickListener { enableMyLocationAndCenter() }
-
-        // FAB: Report
         b.fabReport.setOnClickListener { showReportSheet() }
-
-        // FAB: Parking Reminder (with haptic + schedule/route logic)
         b.fabSetReminder.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             handleReminderFabTap()
         }
-
-        // FAB: Filters → open sheet
         b.fabFilter.setOnClickListener { openFilterScreen() }
 
-        // Also lift after first layout to be safe
         b.mapRoot.post { liftFabs() }
     }
-
-    // ---- Parking Reminder logic --------------------------------------------
 
     private fun handleReminderFabTap() {
         val enabled = LocalPrefs.loadEnabled(requireContext())
@@ -218,34 +199,25 @@ class MapFragment : Fragment() {
 
         if (!enabled) {
             Snackbar.make(b.mapRoot, "Parking reminders are off.", Snackbar.LENGTH_LONG)
-                .setAction("Configure") {
-                    findNavController().navigate(R.id.remindersFragment)
-                }
+                .setAction("Configure") { findNavController().navigate(R.id.remindersFragment) }
                 .show()
             return
         }
-
         if (minutes <= 0) {
             Snackbar.make(b.mapRoot, "Set a valid reminder time.", Snackbar.LENGTH_LONG)
-                .setAction("Configure") {
-                    findNavController().navigate(R.id.remindersFragment)
-                }
+                .setAction("Configure") { findNavController().navigate(R.id.remindersFragment) }
                 .show()
             return
         }
 
-        // Schedule the reminder (mirror iOS behavior: minutes * 60)
-        val seconds = minutes * 60L
-        ReminderManager.schedule(requireContext(), seconds)
-
+        ReminderManager.schedule(requireContext(), minutes * 60L)
         Snackbar.make(
             b.mapRoot,
-            getString(R.string.rem_scheduled_fmt, minutes), // e.g., "Reminder set for 30 min"
+            getString(R.string.rem_scheduled_fmt, minutes),
             Snackbar.LENGTH_SHORT
         ).show()
     }
 
-    // ---- Optional helpers for dark-mode map styling ------------------------
     private fun isNightMode(): Boolean {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return mode == Configuration.UI_MODE_NIGHT_YES
@@ -259,14 +231,10 @@ class MapFragment : Fragment() {
             android.util.Log.w("MapFragment", "Map style load failed", it)
         }
     }
-    // ------------------------------------------------------------------------
 
     private fun dp(value: Int): Int =
         (value * resources.displayMetrics.density).toInt()
 
-    // ------------------------------------------------------------------------
-    // Permissions + My Location
-    // ------------------------------------------------------------------------
     private fun hasLocationPermission(): Boolean {
         val ctx = requireContext()
         val fine = ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -289,15 +257,11 @@ class MapFragment : Fragment() {
                 map.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
                 )
-                // re-apply filters with fresh location
                 applyFiltersAndUpdateMarkers(vm.uiState.value.reports)
             }
         }
     }
 
-    // ------------------------------------------------------------------------
-    // Reporting (keeps cross-platform Firestore shape)
-    // ------------------------------------------------------------------------
     private fun showReportSheet() {
         val ctx = requireContext()
         val sheet = BottomSheetDialog(ctx)
@@ -316,26 +280,21 @@ class MapFragment : Fragment() {
                 ctx, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
             ).apply {
                 this.text = text
-
                 icon = AppCompatResources.getDrawable(ctx, iconRes)
                 iconTint = null
                 iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
                 iconSize = dp(48)
                 iconPadding = dp(14)
-
                 backgroundTintList = ContextCompat.getColorStateList(ctx, bgColor)
                 setTextColor(ContextCompat.getColor(ctx, android.R.color.white))
-
                 insetTop = dp(8)
                 insetBottom = dp(8)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { bottomMargin = dp(10) }
-
                 setOnClickListener {
-                    sheet.dismiss()
-                    onClick()
+                    sheet.dismiss(); onClick()
                 }
             }
         }
@@ -368,13 +327,10 @@ class MapFragment : Fragment() {
 
         val fused = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        // 1) Try last known
         fused.lastLocation.addOnSuccessListener { last ->
             if (last != null) {
                 postReport(kind, last); return@addOnSuccessListener
             }
-
-            // 2) Fresh current
             val cts = CancellationTokenSource()
             fused.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, cts.token)
                 .addOnSuccessListener { current ->
@@ -398,7 +354,7 @@ class MapFragment : Fragment() {
     private fun postReport(kind: String, loc: Location) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val nowTs = Timestamp.now()
-        val nowMs = System.currentTimeMillis()
+        val nowMs = System.currentTimeMillis()   // <-- fixed
 
         val report = hashMapOf(
             "type" to kind,
@@ -429,32 +385,25 @@ class MapFragment : Fragment() {
             }
     }
 
-    // ------------------------------------------------------------------------
-    // Filters → apply + markers
-    // ------------------------------------------------------------------------
     private fun openFilterScreen() {
         FilterBottomSheet().show(parentFragmentManager, "filters")
     }
 
-    // apply local filters, then update markers
     private fun applyFiltersAndUpdateMarkers(source: List<Report>) {
         val now = System.currentTimeMillis()
         val cutoff = now - filter.timeSeconds * 1000L
         val loc = lastUserLoc
 
         val filtered = source.asSequence()
-            // time
             .filter { r -> r.timeReported == 0L || r.timeReported >= cutoff }
-            // types
             .filter { r ->
                 when (r.rangerType?.lowercase(Locale.getDefault())?.trim()) {
                     "officer", "ranger", "inspector" -> filter.showOfficer
                     "chalk", "chalking", "tyre", "tire" -> filter.showChalk
                     "fine", "ticket" -> filter.showFines
-                    else -> true // unknown types shown
+                    else -> true
                 }
             }
-            // extra distance cutoff (relative to user), if we know location
             .filter { r ->
                 if (loc == null) return@filter true
                 val lat = r.lat ?: return@filter false
@@ -466,7 +415,6 @@ class MapFragment : Fragment() {
         updateMarkers(filtered)
     }
 
-    // Haversine distance in KM
     private fun haversineKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val R = 6371.0
         val dLat = Math.toRadians(lat2 - lat1)
@@ -479,18 +427,13 @@ class MapFragment : Fragment() {
         return R * c
     }
 
-    // ------------------------------------------------------------------------
-    // Markers
-    // ------------------------------------------------------------------------
     private fun updateMarkers(reports: List<Report>) {
         val map = gmap ?: return
 
-        // remove markers for items no longer present
         val ids = reports.map { it.id }.toSet()
         val toRemove = markerMap.keys.filter { it !in ids }
         toRemove.forEach { id -> markerMap.remove(id)?.remove() }
 
-        // add/update current markers
         for (r in reports) {
             val lat = r.lat ?: continue
             val lng = r.longitude ?: continue
@@ -546,7 +489,6 @@ class MapFragment : Fragment() {
         super.onDestroyView()
     }
 
-    // --- mirror of the small LocalPrefs helper you used in RemindersFragment ---
     private object LocalPrefs {
         private const val FILE = "reminders_prefs"
         private const val K_ENABLED = "enabled"

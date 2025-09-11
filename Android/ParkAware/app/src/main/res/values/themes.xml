@@ -6,25 +6,37 @@
         <!-- App background -->
         <item name="android:windowBackground">@color/pa_background</item>
 
-        <!-- App-wide font (optional if you have /res/font/roboto.ttf) -->
+        <!-- App-wide font -->
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
 
-        <!-- Edge-to-edge: transparent bars; icons handled in code -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Status & navigation bars -->
+        <item name="android:statusBarColor">@color/pa_background</item>
+        <item name="android:navigationBarColor">@color/pa_background</item>
+
+        <!-- Make Toolbar/AppBar match app background -->
+        <item name="toolbarStyle">@style/ParkAware.Toolbar</item>
     </style>
 
-    <!-- (Optional) Explicit dark variant if you ever want overrides -->
+    <!-- Dark variant -->
     <style name="Theme.ParkAware.Dark" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/pa_background</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/pa_background</item>
+        <item name="android:navigationBarColor">@color/pa_background</item>
+        <item name="toolbarStyle">@style/ParkAware.Toolbar</item>
     </style>
 
-    <!-- If you need a reusable rounded shape, base it on Material3 -->
+    <!-- Custom Toolbar style -->
+    <style name="ParkAware.Toolbar" parent="@style/Widget.Material3.Toolbar">
+        <item name="android:background">@color/pa_background</item>
+        <item name="titleTextColor">@color/base_teal</item>
+        <item name="subtitleTextColor">@color/base_teal</item>
+        <item name="navigationIconTint">@color/base_teal</item>
+    </style>
+
+    <!-- Reusable rounded shape -->
     <style name="ShapeAppearance.ParkAware.MediumRound"
         parent="ShapeAppearance.Material3.Corner.Medium">
         <item name="cornerFamily">rounded</item>
